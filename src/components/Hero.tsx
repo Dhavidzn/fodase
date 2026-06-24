@@ -4,204 +4,234 @@ import { ChevronDown, Sparkles, Orbit, Award } from 'lucide-react';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const stage1Ref = useRef<HTMLDivElement>(null);
   const stage2Ref = useRef<HTMLDivElement>(null);
   const zoomLevelSpanRef = useRef<HTMLSpanElement>(null);
   const timecodeSpanRef = useRef<HTMLSpanElement>(null);
   const scrollLabelRef = useRef<HTMLSpanElement>(null);
 
-  const [videoSource, setVideoSource] = useState<string | null>(null);
-  const [videoError, setVideoError] = useState<boolean>(false);
+  const totalFrames = 192;
+  const duration = 8.0; // 8 seconds total at 24fps
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const [loadedCount, setLoadedCount] = useState<number>(0);
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
+  const [loadError, setLoadError] = useState<boolean>(false);
 
-  const CLOUDINARY_VIDEO_URL = "https://res.cloudinary.com/dox4hbvgw/video/upload/v1782270270/Satellite_zooming_out_from_Earth_202606202308_i7ppso.mp4";
+  const containerOffsetTopRef = useRef<number>(0);
+  const containerHeightRef = useRef<number>(0);
+  const targetProgressRef = useRef<number>(0);
+  const currentProgressRef = useRef<number>(0);
+  const isUpdatingRef = useRef<boolean>(false);
 
-  /**
-   * EXPLICATIVE METADATA: WHY THE VIDEO FAILS IN PRODUCTION (VERCEL) BUT WORKS LOCALLY
-   * 
-   * 1. Dynamic Public Assets missing in Git: When optimizing the video locally, the file `/public/satellite-optimized.mp4` 
-   *    is saved on the developer's local storage. Since local compiled binaries or temporary files are ignored or not pushed 
-   *    to the remote GitHub/Git branch, the Vercel deployment build has NO access to `/satellite-optimized.mp4`, resulting in a 404 error.
-   * 2. CORS & Preflight checks: Cloudinary or other external CDNs may block cross-origin requests unless the video element 
-   *    explicitly configures the `crossOrigin="anonymous"` attribute and the request headers are preflighted correctly.
-   * 3. CurrentTime Mutation & Race Conditions: Mutating `video.currentTime` before `loadedmetadata` or before `readyState >= 1` 
-   *    triggers a fatal browser exception ("InvalidStateError") in Safari and Chrome. This halts React render loops on live builds.
-   * 4. AutoPlay Restrictions: Many modern mobile browsers and production policies automatically block media elements 
-   *    that are not explicitly `muted`, `playsInline` or that lack a user interaction, unless preload is set appropriately.
-   */
+  const measureContainer = () => {
+    const container = containerRef.current;
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      containerOffsetTopRef.current = rect.top + scrollTop;
+      containerHeightRef.current = rect.height;
+    }
+  };
 
-  // 1. Verify if the video is actually available via fetch() before initialization
-  useEffect(() => {
-    let isMounted = true;
-    
-    const verifyVideoSrc = async () => {
-      try {
-        console.log("Checking video availability on Cloudinary...");
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
-        
-        const response = await fetch(CLOUDINARY_VIDEO_URL, { 
-          method: 'HEAD',
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if (!isMounted) return;
-        
-        if (response.ok) {
-          console.log("Cloudinary video is available. Setting source.");
-          setVideoSource(CLOUDINARY_VIDEO_URL);
-        } else {
-          throw new Error(`Cloudinary responded with status: ${response.status}`);
-        }
-      } catch (err) {
-        if (!isMounted) return;
-        console.error("Cloudinary video fetch check failed or is blocked by CORS/Adblockers:", err);
-        
-        // Try local fallback
-        try {
-          console.log("Attempting local fallback check...");
-          const localCheck = await fetch("/satellite-optimized.mp4", { method: 'HEAD' });
-          if (localCheck.ok) {
-            console.log("Local fallback video is available. Setting source.");
-            setVideoSource("/satellite-optimized.mp4");
-          } else {
-            throw new Error("Local fallback video not found.");
-          }
-        } catch (localErr) {
-          console.error("Local fallback video check also failed:", localErr);
-          setVideoError(true);
-        }
+  const drawFrame = (index: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const img = imagesRef.current[index];
+    if (img && img.complete) {
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const imgWidth = img.naturalWidth || 1280;
+      const imgHeight = img.naturalHeight || 720;
+
+      const imgRatio = imgWidth / imgHeight;
+      const canvasRatio = canvasWidth / canvasHeight;
+
+      let drawWidth = canvasWidth;
+      let drawHeight = canvasHeight;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (imgRatio > canvasRatio) {
+        drawWidth = canvasHeight * imgRatio;
+        offsetX = (canvasWidth - drawWidth) / 2;
+      } else {
+        drawHeight = canvasWidth / imgRatio;
+        offsetY = (canvasHeight - drawHeight) / 2;
       }
-    };
 
-    verifyVideoSrc();
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    }
+  };
+
+  const resizeCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.round(currentProgressRef.current * (totalFrames - 1))));
+      drawFrame(frameIndex);
+    }
+  };
+
+  // 1. Parallel frame preloading to memory
+  useEffect(() => {
+    let active = true;
+    const loadedImages: HTMLImageElement[] = [];
+    let count = 0;
+
+    console.log("Preloading 192 highly-optimized satellite sequence frames...");
+
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image();
+      const frameNum = String(i).padStart(3, '0');
+      img.src = `/frames/frame_${frameNum}.jpg`;
+      img.onload = () => {
+        if (!active) return;
+        count++;
+        setLoadedCount(count);
+        
+        // Draw the very first frame immediately as a cover placeholder once ready
+        if (i === 1) {
+          resizeCanvas();
+        }
+
+        if (count >= 30) { // Enable scroll-interaction as soon as we have enough frames
+          setIsVideoLoaded(true);
+        }
+      };
+      img.onerror = () => {
+        console.error(`Failed to load satellite frame sequence: frame_${frameNum}.jpg`);
+        if (i === 1) {
+          setLoadError(true);
+        }
+      };
+      loadedImages.push(img);
+    }
+    imagesRef.current = loadedImages;
+
     return () => {
-      isMounted = false;
+      active = false;
     };
   }, []);
 
-  // 2. Wait for loadedmetadata event, add logs and error handling before starting scroll logic
+  // Handle container and canvas size updates
   useEffect(() => {
-    if (!videoSource) return;
-    
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onLoadedMetadata = () => {
-      console.log("Video loaded");
-      console.log("Duration:", video.duration);
-      console.log("Ready State:", video.readyState);
-      
-      setDuration(video.duration || 8);
-      setIsVideoLoaded(true);
-    };
-
-    const onVideoError = (e: Event) => {
-      console.error("HTML5 Video Error encountered:", e);
-      if (video.error) {
-        console.error(`Detailed Video Error Code: ${video.error.code}; Message: ${video.error.message}`);
-      }
-      setVideoError(true);
-    };
-
-    if (video.readyState >= 1) {
-      onLoadedMetadata();
-    } else {
-      video.addEventListener('loadedmetadata', onLoadedMetadata);
-    }
-    
-    video.addEventListener('error', onVideoError);
-
+    measureContainer();
+    resizeCanvas();
+    window.addEventListener('resize', () => {
+      measureContainer();
+      resizeCanvas();
+    });
+    const timeoutId = setTimeout(() => {
+      measureContainer();
+      resizeCanvas();
+    }, 150);
     return () => {
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      video.removeEventListener('error', onVideoError);
+      window.removeEventListener('resize', () => {
+        measureContainer();
+        resizeCanvas();
+      });
+      clearTimeout(timeoutId);
     };
-  }, [videoSource]);
+  }, [isVideoLoaded]);
 
-  // 3. Refactored scroll-driven system that works ONLY after the video is completely loaded (isVideoLoaded === true)
+  // 3. Fully scroll-controlled passive rendering loop
   useEffect(() => {
     if (!isVideoLoaded) return;
 
-    let animationId: number;
-    let lastProgress = -1;
-    let lastTime = -1;
-    
-    const updateFrame = () => {
-      const container = containerRef.current;
-      const video = videoRef.current;
+    const onScroll = () => {
+      const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop = containerOffsetTopRef.current;
+      const height = containerHeightRef.current;
+      const totalScrollRange = height - window.innerHeight;
       
-      if (container && video && video.readyState >= 1) {
-        const rect = container.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const totalScrollRange = rect.height - viewportHeight;
-        
-        let progress = 0;
-        if (totalScrollRange > 0) {
-          progress = -rect.top / totalScrollRange;
-          progress = Math.max(0, Math.min(1, progress));
-        }
-        
-        const videoDuration = video.duration || duration || 8;
-        const targetTime = progress * videoDuration;
-        
-        // Ensure accurate tracking without decoder stalls
-        const diff = targetTime - video.currentTime;
-        if (Math.abs(diff) > 0.005 && !video.seeking) {
-          if (progress < 0.002) {
-            video.currentTime = 0;
-          } else if (progress > 0.998) {
-            video.currentTime = videoDuration;
-          } else {
-            video.currentTime += diff * 0.35;
-          }
-        }
-        
-        // Fast direct DOM updates to keep scrolling fully responsive
-        if (progress !== lastProgress) {
-          lastProgress = progress;
-          
-          if (stage1Ref.current) {
-            const firstTextOpacity = Math.max(0, 1 - progress * 2.5);
-            const textTransform = `translateY(${-progress * 40}px)`;
-            stage1Ref.current.style.opacity = String(firstTextOpacity);
-            stage1Ref.current.style.transform = textTransform;
-            stage1Ref.current.style.pointerEvents = firstTextOpacity > 0.1 ? 'auto' : 'none';
-          }
-          
-          if (stage2Ref.current) {
-            const secondTextOpacity = Math.max(0, Math.min(1, (progress - 0.3) * 4));
-            stage2Ref.current.style.opacity = String(secondTextOpacity);
-            stage2Ref.current.style.pointerEvents = secondTextOpacity > 0.1 ? 'auto' : 'none';
-          }
-          
-          if (zoomLevelSpanRef.current) {
-            zoomLevelSpanRef.current.textContent = `ZOOM LEVEL: ${(100 - progress * 80).toFixed(1)}%`;
-          }
-          
-          if (scrollLabelRef.current) {
-            scrollLabelRef.current.textContent = progress < 0.9 ? 'EXPLORE O TERRITÓRIO' : 'CONTINUE ROLANDO';
-          }
-        }
-        
-        const currentVTime = video.currentTime;
-        if (Math.abs(currentVTime - lastTime) > 0.01) {
-          lastTime = currentVTime;
-          if (timecodeSpanRef.current) {
-            timecodeSpanRef.current.textContent = `TIMECODE: ${currentVTime.toFixed(2)}s / ${videoDuration.toFixed(1)}s`;
-          }
-        }
+      let progress = 0;
+      if (totalScrollRange > 0) {
+        progress = (scrollTop - offsetTop) / totalScrollRange;
+        progress = Math.max(0, Math.min(1, progress));
       }
       
-      animationId = requestAnimationFrame(updateFrame);
+      targetProgressRef.current = progress;
+      
+      if (!isUpdatingRef.current) {
+        isUpdatingRef.current = true;
+        requestAnimationFrame(updateLoop);
+      }
     };
-    
-    animationId = requestAnimationFrame(updateFrame);
-    return () => cancelAnimationFrame(animationId);
-  }, [isVideoLoaded, duration]);
+
+    const updateLoop = () => {
+      const targetProgress = targetProgressRef.current;
+      const diffProgress = targetProgress - currentProgressRef.current;
+      
+      // Buttery smooth frame-interpolation easing (0.15 matches native kinetic scrolling perfectly)
+      if (Math.abs(diffProgress) > 0.001) {
+        currentProgressRef.current += diffProgress * 0.15;
+      } else {
+        currentProgressRef.current = targetProgress;
+      }
+
+      const currentProgress = currentProgressRef.current;
+      const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.round(currentProgress * (totalFrames - 1))));
+      
+      // Fluid zoom-out and rotating spatial effect
+      const scaleVal = 1.3 - (currentProgress * 0.3);
+      const rotateVal = (1 - currentProgress) * 0.8;
+      
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.style.transform = `scale(${scaleVal}) rotate(${rotateVal}deg)`;
+        drawFrame(frameIndex);
+      }
+
+      // Live text interface overlay updates
+      if (stage1Ref.current) {
+        const firstTextOpacity = Math.max(0, 1 - currentProgress * 2.5);
+        const textTransform = `translateY(${-currentProgress * 40}px)`;
+        stage1Ref.current.style.opacity = String(firstTextOpacity);
+        stage1Ref.current.style.transform = textTransform;
+        stage1Ref.current.style.pointerEvents = firstTextOpacity > 0.1 ? 'auto' : 'none';
+      }
+      
+      if (stage2Ref.current) {
+        const secondTextOpacity = Math.max(0, Math.min(1, (currentProgress - 0.3) * 4));
+        stage2Ref.current.style.opacity = String(secondTextOpacity);
+        stage2Ref.current.style.pointerEvents = secondTextOpacity > 0.1 ? 'auto' : 'none';
+      }
+      
+      if (zoomLevelSpanRef.current) {
+        zoomLevelSpanRef.current.textContent = `ZOOM LEVEL: ${(100 - currentProgress * 80).toFixed(1)}%`;
+      }
+      
+      if (scrollLabelRef.current) {
+        scrollLabelRef.current.textContent = currentProgress < 0.9 ? 'EXPLORE O TERRITÓRIO' : 'CONTINUE ROLANDO';
+      }
+
+      if (timecodeSpanRef.current) {
+        const currentVTime = currentProgress * duration;
+        timecodeSpanRef.current.textContent = `TIMECODE: ${currentVTime.toFixed(2)}s / ${duration.toFixed(1)}s`;
+      }
+
+      const progressReached = Math.abs(targetProgress - currentProgress) < 0.001;
+
+      if (!progressReached) {
+        requestAnimationFrame(updateLoop);
+      } else {
+        isUpdatingRef.current = false;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [isVideoLoaded]);
 
   const handleScrollToNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -220,31 +250,30 @@ export default function Hero() {
       {/* Sticky viewport container (100vh) */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[#0A0D18]">
         
-        {/* Visual Fallback: High-resolution Space Earth Satellite image from Unsplash */}
-        {(videoError || !isVideoLoaded) && (
+        {/* Visual Fallback during load or in case of sequence error */}
+        {(loadError || !isVideoLoaded) && (
           <div 
             className="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 z-0"
             style={{ 
               backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop')`,
-              opacity: videoError ? 1 : 0.4
+              opacity: loadError ? 1 : 0.4
             }}
             aria-hidden="true"
           />
         )}
 
-        {/* Background Space Video */}
-        {videoSource && !videoError && (
-          <video
-            ref={videoRef}
-            src={videoSource}
+        {/* Butter-smooth Preloaded Canvas Sequencer */}
+        {!loadError && (
+          <canvas
+            ref={canvasRef}
             className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 transition-opacity duration-1000 ${
-              isVideoLoaded ? 'opacity-80' : 'opacity-0'
+              isVideoLoaded ? 'opacity-80' : 'opacity-30'
             }`}
-            muted
-            playsInline
-            preload="metadata"
-            crossOrigin="anonymous"
-            aria-hidden="true"
+            style={{
+              willChange: 'transform',
+              backfaceVisibility: 'hidden',
+              transform: 'scale(1.3)'
+            }}
           />
         )}
 
