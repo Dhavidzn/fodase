@@ -56,7 +56,26 @@ export default function Hero() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const frame = framesRef.current[index];
+    // Localizar o frame carregado mais próximo do índice desejado (para funcionamento instantâneo)
+    let frame = framesRef.current[index];
+    
+    if (!frame) {
+      let minDiff = Infinity;
+      let closestIndex = -1;
+      for (let i = 0; i < totalFrames; i++) {
+        if (framesRef.current[i]) {
+          const diff = Math.abs(i - index);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        }
+      }
+      if (closestIndex !== -1) {
+        frame = framesRef.current[closestIndex];
+      }
+    }
+
     if (frame) {
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
@@ -112,7 +131,9 @@ export default function Hero() {
     const offscreenCtx = offscreenCanvas.getContext('2d');
 
     let currentFrame = 0;
-    const extractedFrames: ImageBitmap[] = [];
+    
+    // Inicializar framesRef.current com array vazio de tamanho totalFrames
+    framesRef.current = new Array(totalFrames).fill(null);
 
     const seekNextFrame = () => {
       if (!active) return;
@@ -122,8 +143,6 @@ export default function Hero() {
         video.currentTime = targetTime;
       } else {
         // Pré-carregamento concluído com sucesso
-        framesRef.current = extractedFrames;
-        setIsVideoLoaded(true);
         console.log(`Pre-cached all ${totalFrames} frames as GPU ImageBitmaps successfully.`);
         // Desenhar a primeira frame imediatamente
         resizeCanvas();
@@ -136,10 +155,19 @@ export default function Hero() {
         if (offscreenCtx) {
           offscreenCtx.drawImage(video, 0, 0, offscreenCanvas.width, offscreenCanvas.height);
           const bitmap = await createImageBitmap(offscreenCanvas);
-          extractedFrames.push(bitmap);
-          currentFrame++;
-          setLoadedCount(currentFrame);
-          seekNextFrame();
+          if (active) {
+            framesRef.current[currentFrame] = bitmap;
+            
+            // Ativa o canvas imediatamente assim que o primeiro frame é renderizado na GPU
+            if (currentFrame === 0) {
+              setIsVideoLoaded(true);
+              resizeCanvas();
+            }
+            
+            currentFrame++;
+            setLoadedCount(currentFrame);
+            seekNextFrame();
+          }
         }
       } catch (err) {
         console.error("Frame extraction error at index:", currentFrame, err);
@@ -328,23 +356,21 @@ export default function Hero() {
           />
         )}
 
-        {/* High-quality loader progress indicator (highly integrated visually) */}
-        {!isVideoLoaded && !loadError && (
-          <div className="absolute inset-0 bg-[#0A0D18] z-30 flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center gap-4 max-w-xs text-center px-4">
-              <Orbit className="w-8 h-8 text-[#A88BE8] animate-spin" />
-              <div className="font-mono text-xs tracking-widest text-white/50 uppercase">
-                CARREGANDO SATELLITE SEQUENCER
-              </div>
-              <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden border border-white/5">
-                <div 
-                  className="h-full bg-gradient-to-r from-[#A88BE8] to-[#F9B27A] transition-all duration-300"
-                  style={{ width: `${Math.round((loadedCount / totalFrames) * 100)}%` }}
-                />
-              </div>
-              <div className="font-mono text-[10px] text-white/30 uppercase tracking-widest">
-                PRE-DECODIFICANDO: {Math.round((loadedCount / totalFrames) * 100)}%
-              </div>
+        {/* Subtle, non-blocking background progress bar and status indicator */}
+        {loadedCount < totalFrames && !loadError && (
+          <div className="absolute top-24 right-6 z-30 flex flex-col items-end gap-1.5 pointer-events-none">
+            <div className="flex items-center gap-2 bg-[#0A0D18]/80 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md shadow-lg">
+              <Orbit className="w-3.5 h-3.5 text-[#A88BE8] animate-spin" />
+              <span className="font-mono text-[10px] text-white/80 uppercase tracking-wider">
+                CARREGANDO ORBITAL: {Math.round((loadedCount / totalFrames) * 100)}%
+              </span>
+            </div>
+            {/* Tiny progress bar */}
+            <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden border border-white/5">
+              <div 
+                className="h-full bg-gradient-to-r from-[#A88BE8] to-[#F9B27A] transition-all duration-300"
+                style={{ width: `${Math.round((loadedCount / totalFrames) * 100)}%` }}
+              />
             </div>
           </div>
         )}
