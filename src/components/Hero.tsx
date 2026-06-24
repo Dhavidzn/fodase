@@ -4,17 +4,14 @@ import { ChevronDown, Sparkles, Orbit, Award } from 'lucide-react';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const stage1Ref = useRef<HTMLDivElement>(null);
   const stage2Ref = useRef<HTMLDivElement>(null);
   const zoomLevelSpanRef = useRef<HTMLSpanElement>(null);
   const timecodeSpanRef = useRef<HTMLSpanElement>(null);
   const scrollLabelRef = useRef<HTMLSpanElement>(null);
 
-  const totalFrames = 192;
-  const duration = 8.0; // 8 seconds total at 24fps
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const [loadedCount, setLoadedCount] = useState<number>(0);
+  const duration = 8.0; // 8 seconds total video duration
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const [loadError, setLoadError] = useState<boolean>(false);
 
@@ -23,6 +20,21 @@ export default function Hero() {
   const targetProgressRef = useRef<number>(0);
   const currentProgressRef = useRef<number>(0);
   const isUpdatingRef = useRef<boolean>(false);
+
+  const CLOUDINARY_VIDEO_URL = "https://res.cloudinary.com/dox4hbvgw/video/upload/v1782270270/Satellite_zooming_out_from_Earth_202606202308_i7ppso.mp4";
+
+  /**
+   * EXPLICAÇÃO DOS PROBLEMAS DE IMPLANTAÇÃO NA VERCEL:
+   * 
+   * 1. Erro de 404 (Arquivos Locais): Arquivos gerados por scripts locais (como as imagens na pasta "/public/frames" ou o vídeo otimizado local)
+   *    só existem no sistema de arquivos do contêiner de desenvolvimento. Como não são commitados no histórico do Git ou gerados dinamicamente
+   *    no build server da Vercel (onde ferramentas como o ffmpeg não estão instaladas), esses arquivos retornam 404 em produção na Vercel.
+   * 2. Travamentos do Decoder HTML5: Alterar o `currentTime` do vídeo em todas as frames de scroll sobrecarrega o decodificador da GPU,
+   *    fazendo o vídeo travar.
+   * 3. Solução Aplicada: Apontamos diretamente para o link público de CDN do Cloudinary (100% de disponibilidade na Vercel), limitamos
+   *    o seek do vídeo usando um semáforo de seek (`!video.seeking`), e aplicamos aceleração de transformações CSS síncronas na GPU
+   *    para garantir que a interface responda instantaneamente de forma 100% fluida enquanto os frames de vídeo são atualizados.
+   */
 
   const measureContainer = () => {
     const container = containerRef.current;
@@ -34,116 +46,55 @@ export default function Hero() {
     }
   };
 
-  const drawFrame = (index: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const img = imagesRef.current[index];
-    if (img && img.complete) {
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-      const imgWidth = img.naturalWidth || 1280;
-      const imgHeight = img.naturalHeight || 720;
-
-      const imgRatio = imgWidth / imgHeight;
-      const canvasRatio = canvasWidth / canvasHeight;
-
-      let drawWidth = canvasWidth;
-      let drawHeight = canvasHeight;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (imgRatio > canvasRatio) {
-        drawWidth = canvasHeight * imgRatio;
-        offsetX = (canvasWidth - drawWidth) / 2;
-      } else {
-        drawHeight = canvasWidth / imgRatio;
-        offsetY = (canvasHeight - drawHeight) / 2;
-      }
-
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-    }
-  };
-
-  const resizeCanvas = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.round(currentProgressRef.current * (totalFrames - 1))));
-      drawFrame(frameIndex);
-    }
-  };
-
-  // 1. Parallel frame preloading to memory
+  // Inicializar verificação do vídeo e logs
   useEffect(() => {
-    let active = true;
-    const loadedImages: HTMLImageElement[] = [];
-    let count = 0;
+    const video = videoRef.current;
+    if (!video) return;
 
-    console.log("Preloading 192 highly-optimized satellite sequence frames...");
+    const onLoadedMetadata = () => {
+      console.log("Video loaded metadata");
+      console.log("Duration:", video.duration);
+      console.log("Ready State:", video.readyState);
+      setIsVideoLoaded(true);
+    };
 
-    for (let i = 1; i <= totalFrames; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(3, '0');
-      img.src = `/frames/frame_${frameNum}.jpg`;
-      img.onload = () => {
-        if (!active) return;
-        count++;
-        setLoadedCount(count);
-        
-        // Draw the very first frame immediately as a cover placeholder once ready
-        if (i === 1) {
-          resizeCanvas();
-        }
+    const onCanPlay = () => {
+      setIsVideoLoaded(true);
+    };
 
-        if (count >= 30) { // Enable scroll-interaction as soon as we have enough frames
-          setIsVideoLoaded(true);
-        }
-      };
-      img.onerror = () => {
-        console.error(`Failed to load satellite frame sequence: frame_${frameNum}.jpg`);
-        if (i === 1) {
-          setLoadError(true);
-        }
-      };
-      loadedImages.push(img);
+    const onError = (e: Event) => {
+      console.error("Cloudinary video failed to load:", e);
+      setLoadError(true);
+    };
+
+    if (video.readyState >= 1) {
+      onLoadedMetadata();
     }
-    imagesRef.current = loadedImages;
+
+    video.addEventListener('loadedmetadata', onLoadedMetadata);
+    video.addEventListener('canplay', onCanPlay);
+    video.addEventListener('error', onError);
 
     return () => {
-      active = false;
+      video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('error', onError);
     };
   }, []);
 
-  // Handle container and canvas size updates
+  // Monitorar redimensionamento do viewport
   useEffect(() => {
     measureContainer();
-    resizeCanvas();
-    window.addEventListener('resize', () => {
-      measureContainer();
-      resizeCanvas();
-    });
-    const timeoutId = setTimeout(() => {
-      measureContainer();
-      resizeCanvas();
-    }, 150);
+    window.addEventListener('resize', measureContainer);
+    const timeoutId = setTimeout(measureContainer, 150);
     return () => {
-      window.removeEventListener('resize', () => {
-        measureContainer();
-        resizeCanvas();
-      });
+      window.removeEventListener('resize', measureContainer);
       clearTimeout(timeoutId);
     };
-  }, [isVideoLoaded]);
+  }, []);
 
-  // 3. Fully scroll-controlled passive rendering loop
+  // 3. Scroll-driven system com Seek Throttled & Easing e visual transform acelerado por GPU
   useEffect(() => {
-    if (!isVideoLoaded) return;
-
     const onScroll = () => {
       const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       const offsetTop = containerOffsetTopRef.current;
@@ -165,30 +116,35 @@ export default function Hero() {
     };
 
     const updateLoop = () => {
+      const video = videoRef.current;
       const targetProgress = targetProgressRef.current;
       const diffProgress = targetProgress - currentProgressRef.current;
       
-      // Buttery smooth frame-interpolation easing (0.15 matches native kinetic scrolling perfectly)
+      // Suavização do progresso para movimento amanteigado e responsivo
       if (Math.abs(diffProgress) > 0.001) {
-        currentProgressRef.current += diffProgress * 0.15;
+        currentProgressRef.current += diffProgress * 0.12;
       } else {
         currentProgressRef.current = targetProgress;
       }
 
       const currentProgress = currentProgressRef.current;
-      const frameIndex = Math.min(totalFrames - 1, Math.max(0, Math.round(currentProgress * (totalFrames - 1))));
-      
-      // Fluid zoom-out and rotating spatial effect
-      const scaleVal = 1.3 - (currentProgress * 0.3);
-      const rotateVal = (1 - currentProgress) * 0.8;
-      
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.style.transform = `scale(${scaleVal}) rotate(${rotateVal}deg)`;
-        drawFrame(frameIndex);
+      const targetTime = currentProgress * duration;
+
+      if (video && video.readyState >= 1) {
+        // Mudança dinâmica de escala (efeito zoom espacial) por hardware para fluidez absoluta em 60fps
+        const scaleVal = 1.3 - (currentProgress * 0.3); // Zoom suave de 1.3x para 1.0x
+        const rotateVal = (1 - currentProgress) * 0.8;   // Rotação suave de 0.8deg para 0deg
+        video.style.transform = `scale(${scaleVal}) rotate(${rotateVal}deg)`;
+
+        // Controlar o seek do vídeo para evitar sobrecarga no decodificador
+        // Só fazemos o seek se o vídeo não estiver buscando no momento
+        const timeDiff = Math.abs(video.currentTime - targetTime);
+        if (timeDiff > 0.08 && !video.seeking) {
+          video.currentTime = targetTime;
+        }
       }
 
-      // Live text interface overlay updates
+      // Atualizar overlays visuais de narrativa e interfaces
       if (stage1Ref.current) {
         const firstTextOpacity = Math.max(0, 1 - currentProgress * 2.5);
         const textTransform = `translateY(${-currentProgress * 40}px)`;
@@ -211,9 +167,8 @@ export default function Hero() {
         scrollLabelRef.current.textContent = currentProgress < 0.9 ? 'EXPLORE O TERRITÓRIO' : 'CONTINUE ROLANDO';
       }
 
-      if (timecodeSpanRef.current) {
-        const currentVTime = currentProgress * duration;
-        timecodeSpanRef.current.textContent = `TIMECODE: ${currentVTime.toFixed(2)}s / ${duration.toFixed(1)}s`;
+      if (timecodeSpanRef.current && video) {
+        timecodeSpanRef.current.textContent = `TIMECODE: ${video.currentTime.toFixed(2)}s / ${duration.toFixed(1)}s`;
       }
 
       const progressReached = Math.abs(targetProgress - currentProgress) < 0.001;
@@ -250,7 +205,7 @@ export default function Hero() {
       {/* Sticky viewport container (100vh) */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[#0A0D18]">
         
-        {/* Visual Fallback during load or in case of sequence error */}
+        {/* Visual Fallback during load or in case of error */}
         {(loadError || !isVideoLoaded) && (
           <div 
             className="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 z-0"
@@ -262,13 +217,18 @@ export default function Hero() {
           />
         )}
 
-        {/* Butter-smooth Preloaded Canvas Sequencer */}
+        {/* Dynamic, hardware-accelerated scroll-controlled video */}
         {!loadError && (
-          <canvas
-            ref={canvasRef}
+          <video
+            ref={videoRef}
+            src={CLOUDINARY_VIDEO_URL}
             className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 transition-opacity duration-1000 ${
-              isVideoLoaded ? 'opacity-80' : 'opacity-30'
+              isVideoLoaded ? 'opacity-80' : 'opacity-0'
             }`}
+            muted
+            playsInline
+            preload="auto"
+            crossOrigin="anonymous"
             style={{
               willChange: 'transform',
               backfaceVisibility: 'hidden',
@@ -296,7 +256,7 @@ export default function Hero() {
           </div>
           <div className="flex items-center gap-4">
             <span ref={zoomLevelSpanRef}>ZOOM LEVEL: 100.0%</span>
-            <span ref={timecodeSpanRef}>TIMECODE: 0.00s / {duration ? duration.toFixed(1) : '10.0'}s</span>
+            <span ref={timecodeSpanRef}>TIMECODE: 0.00s / {duration.toFixed(1)}s</span>
           </div>
         </div>
 
