@@ -11,16 +11,101 @@ export default function Hero() {
   const timecodeSpanRef = useRef<HTMLSpanElement>(null);
   const scrollLabelRef = useRef<HTMLSpanElement>(null);
 
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [duration, setDuration] = useState(0);
+  const [videoSource, setVideoSource] = useState<string | null>(null);
+  const [videoError, setVideoError] = useState<boolean>(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
 
+  const CLOUDINARY_VIDEO_URL = "https://res.cloudinary.com/dox4hbvgw/video/upload/v1782270270/Satellite_zooming_out_from_Earth_202606202308_i7ppso.mp4";
+
+  /**
+   * EXPLICATIVE METADATA: WHY THE VIDEO FAILS IN PRODUCTION (VERCEL) BUT WORKS LOCALLY
+   * 
+   * 1. Dynamic Public Assets missing in Git: When optimizing the video locally, the file `/public/satellite-optimized.mp4` 
+   *    is saved on the developer's local storage. Since local compiled binaries or temporary files are ignored or not pushed 
+   *    to the remote GitHub/Git branch, the Vercel deployment build has NO access to `/satellite-optimized.mp4`, resulting in a 404 error.
+   * 2. CORS & Preflight checks: Cloudinary or other external CDNs may block cross-origin requests unless the video element 
+   *    explicitly configures the `crossOrigin="anonymous"` attribute and the request headers are preflighted correctly.
+   * 3. CurrentTime Mutation & Race Conditions: Mutating `video.currentTime` before `loadedmetadata` or before `readyState >= 1` 
+   *    triggers a fatal browser exception ("InvalidStateError") in Safari and Chrome. This halts React render loops on live builds.
+   * 4. AutoPlay Restrictions: Many modern mobile browsers and production policies automatically block media elements 
+   *    that are not explicitly `muted`, `playsInline` or that lack a user interaction, unless preload is set appropriately.
+   */
+
+  // 1. Verify if the video is actually available via fetch() before initialization
   useEffect(() => {
+    let isMounted = true;
+    
+    const verifyVideoSrc = async () => {
+      try {
+        console.log("Checking video availability on Cloudinary...");
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
+        
+        const response = await fetch(CLOUDINARY_VIDEO_URL, { 
+          method: 'HEAD',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!isMounted) return;
+        
+        if (response.ok) {
+          console.log("Cloudinary video is available. Setting source.");
+          setVideoSource(CLOUDINARY_VIDEO_URL);
+        } else {
+          throw new Error(`Cloudinary responded with status: ${response.status}`);
+        }
+      } catch (err) {
+        if (!isMounted) return;
+        console.error("Cloudinary video fetch check failed or is blocked by CORS/Adblockers:", err);
+        
+        // Try local fallback
+        try {
+          console.log("Attempting local fallback check...");
+          const localCheck = await fetch("/satellite-optimized.mp4", { method: 'HEAD' });
+          if (localCheck.ok) {
+            console.log("Local fallback video is available. Setting source.");
+            setVideoSource("/satellite-optimized.mp4");
+          } else {
+            throw new Error("Local fallback video not found.");
+          }
+        } catch (localErr) {
+          console.error("Local fallback video check also failed:", localErr);
+          setVideoError(true);
+        }
+      }
+    };
+
+    verifyVideoSrc();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // 2. Wait for loadedmetadata event, add logs and error handling before starting scroll logic
+  useEffect(() => {
+    if (!videoSource) return;
+    
     const video = videoRef.current;
     if (!video) return;
 
     const onLoadedMetadata = () => {
-      setDuration(video.duration || 10); // fallback to 10 if not ready
+      console.log("Video loaded");
+      console.log("Duration:", video.duration);
+      console.log("Ready State:", video.readyState);
+      
+      setDuration(video.duration || 8);
       setIsVideoLoaded(true);
+    };
+
+    const onVideoError = (e: Event) => {
+      console.error("HTML5 Video Error encountered:", e);
+      if (video.error) {
+        console.error(`Detailed Video Error Code: ${video.error.code}; Message: ${video.error.message}`);
+      }
+      setVideoError(true);
     };
 
     if (video.readyState >= 1) {
@@ -28,16 +113,19 @@ export default function Hero() {
     } else {
       video.addEventListener('loadedmetadata', onLoadedMetadata);
     }
+    
+    video.addEventListener('error', onVideoError);
 
     return () => {
       video.removeEventListener('loadedmetadata', onLoadedMetadata);
+      video.removeEventListener('error', onVideoError);
     };
-  }, []);
+  }, [videoSource]);
 
-  // Highly optimized update loop using requestAnimationFrame & direct DOM mutations.
-  // This completely bypasses React's state reconciliation to achieve buttery smooth 60fps scrolling
-  // and prevents browser decoders from locking up by skipping seek requests when the video is already seeking.
+  // 3. Refactored scroll-driven system that works ONLY after the video is completely loaded (isVideoLoaded === true)
   useEffect(() => {
+    if (!isVideoLoaded) return;
+
     let animationId: number;
     let lastProgress = -1;
     let lastTime = -1;
@@ -53,16 +141,14 @@ export default function Hero() {
         
         let progress = 0;
         if (totalScrollRange > 0) {
-          // Calculate proportional progress of the sticky container
           progress = -rect.top / totalScrollRange;
           progress = Math.max(0, Math.min(1, progress));
         }
         
-        const videoDuration = video.duration || duration || 10;
+        const videoDuration = video.duration || duration || 8;
         const targetTime = progress * videoDuration;
         
-        // Check if the video is already busy seeking.
-        // With an All-Intra (-g 1) video, seeking is instantaneous, so we can use a higher easing factor (0.35) for instant, fluid tracking.
+        // Ensure accurate tracking without decoder stalls
         const diff = targetTime - video.currentTime;
         if (Math.abs(diff) > 0.005 && !video.seeking) {
           if (progress < 0.002) {
@@ -70,12 +156,11 @@ export default function Hero() {
           } else if (progress > 0.998) {
             video.currentTime = videoDuration;
           } else {
-            // High responsive easing factor for instantaneous tracking
             video.currentTime += diff * 0.35;
           }
         }
         
-        // Direct DOM mutations to avoid triggering slow React component re-renders
+        // Fast direct DOM updates to keep scrolling fully responsive
         if (progress !== lastProgress) {
           lastProgress = progress;
           
@@ -116,7 +201,7 @@ export default function Hero() {
     
     animationId = requestAnimationFrame(updateFrame);
     return () => cancelAnimationFrame(animationId);
-  }, [duration]);
+  }, [isVideoLoaded, duration]);
 
   const handleScrollToNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -135,16 +220,33 @@ export default function Hero() {
       {/* Sticky viewport container (100vh) */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[#0A0D18]">
         
+        {/* Visual Fallback: High-resolution Space Earth Satellite image from Unsplash */}
+        {(videoError || !isVideoLoaded) && (
+          <div 
+            className="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 z-0"
+            style={{ 
+              backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop')`,
+              opacity: videoError ? 1 : 0.4
+            }}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Background Space Video */}
-        <video
-          ref={videoRef}
-          src="/satellite-optimized.mp4"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
+        {videoSource && !videoError && (
+          <video
+            ref={videoRef}
+            src={videoSource}
+            className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 transition-opacity duration-1000 ${
+              isVideoLoaded ? 'opacity-80' : 'opacity-0'
+            }`}
+            muted
+            playsInline
+            preload="metadata"
+            crossOrigin="anonymous"
+            aria-hidden="true"
+          />
+        )}
 
         {/* Ambient Overlay: Dark, blue-purple glow mesh overlay */}
         <div 
