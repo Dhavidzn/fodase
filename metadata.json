@@ -1,0 +1,6 @@
+{
+  "name": "Central Maps",
+  "description": "Inteligência Geoespacial para Transformar Dados em Decisões. Soluções de geoprocessamento, sensoriamento remoto e desenvolvimento digital.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
