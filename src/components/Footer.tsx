@@ -13,43 +13,40 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0A0D18] border-t border-white/5 pt-16 pb-8 px-6 relative overflow-hidden" id="main-footer">
-      {/* Decorative vector grid in background */}
-      <div className="absolute inset-0 opacity-[0.01] pointer-events-none bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
-
+    <footer className="bg-[#F8F8F6] border-t border-[#D9D9D9] pt-20 pb-10 px-6 relative overflow-hidden" id="main-footer">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Main Grid: Left branding, Middle link columns, Right contacts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-12 border-b border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-[#D9D9D9]">
           
           {/* Column 1: Branding (lg:col-span-5) */}
           <div className="lg:col-span-5 space-y-6">
             <a 
               href="#" 
               onClick={(e) => handleSmoothScroll(e, '#')}
-              className="inline-flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[#A88BE8] rounded-lg p-1"
+              className="inline-flex items-center gap-3 group focus:outline-none"
               id="footer-logo-link"
               aria-label="Central Maps - Voltar ao topo"
             >
-              <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:border-[#A88BE8]/40 transition-colors duration-300">
-                <Compass className="w-5 h-5 text-[#F9B27A]" />
+              <div className="w-10 h-10 flex items-center justify-center bg-white border border-[#D9D9D9] rounded group-hover:bg-black group-hover:text-white group-hover:border-black transition-colors duration-300">
+                <Compass className="w-5 h-5 text-black group-hover:text-white transition-colors duration-300" />
               </div>
               <div>
-                <span className="font-display font-bold text-lg tracking-wider text-white">
-                  CENTRAL <span className="text-[#F9B27A]">MAPS</span>
+                <span className="font-display font-medium text-lg tracking-wider text-black">
+                  CENTRAL <span className="italic font-normal">MAPS</span>
                 </span>
-                <span className="block font-mono text-[9px] text-[#73798D] tracking-widest uppercase">
-                  Spatial Intelligence // -23.5505
+                <span className="block font-mono text-[8px] text-[#555555] tracking-[0.25em] uppercase">
+                  SPATIAL INTELLIGENCE // SP // BR
                 </span>
               </div>
             </a>
 
-            <p className="text-sm text-[#D6D8E2]/70 leading-relaxed font-light max-w-sm">
-              Unindo tecnologia geoespacial, análise de dados de satélite e desenvolvimento digital sob medida para entregar soluções de alta precisão técnica.
+            <p className="text-xs text-[#555555] leading-relaxed font-light max-w-xs">
+              Unindo tecnologia geoespacial, análise de dados de satélite e desenvolvimento digital sob medida com os mais altos padrões de design e engenharia técnica.
             </p>
 
-            {/* Social Icons (Min size >= 44px for accessibility) */}
-            <div className="flex gap-3" aria-label="Nossos canais sociais">
+            {/* Social Icons */}
+            <div className="flex gap-2" aria-label="Nossos canais sociais">
               {[
                 { icon: Linkedin, label: 'LinkedIn', href: '#' },
                 { icon: Twitter, label: 'Twitter', href: '#' },
@@ -60,11 +57,11 @@ export default function Footer() {
                   <a
                     key={idx}
                     href={soc.href}
-                    className="w-11 h-11 bg-white/5 hover:bg-[#6F5BD3]/25 border border-white/10 hover:border-[#A88BE8]/40 rounded-xl flex items-center justify-center text-[#D6D8E2] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#A88BE8]"
+                    className="w-10 h-10 bg-white border border-[#D9D9D9] hover:bg-black hover:text-white hover:border-black rounded flex items-center justify-center text-[#555555] transition-all duration-200"
                     aria-label={`Visite nosso ${soc.label}`}
                     id={`footer-social-${soc.label.toLowerCase()}`}
                   >
-                    <IconComp className="w-5 h-5" />
+                    <IconComp className="w-4 h-4 text-current" />
                   </a>
                 );
               })}
@@ -73,10 +70,10 @@ export default function Footer() {
 
           {/* Column 2: Quick Links (lg:col-span-3) */}
           <div className="lg:col-span-3 space-y-4">
-            <h4 className="font-mono text-xs font-bold text-white uppercase tracking-widest">
+            <h4 className="font-mono text-[9px] font-semibold text-black uppercase tracking-[0.25em]">
               NAVEGAÇÃO
             </h4>
-            <nav className="flex flex-col gap-3" aria-label="Links rápidos do rodapé">
+            <nav className="flex flex-col gap-3.5" aria-label="Links rápidos do rodapé">
               {[
                 { label: 'Serviços', href: '#servicos' },
                 { label: 'Casos de Estudo', href: '#casos' },
@@ -88,7 +85,7 @@ export default function Footer() {
                   key={link.label}
                   href={link.href}
                   onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className="text-sm text-[#D6D8E2]/80 hover:text-[#A88BE8] transition-colors focus:outline-none focus:text-[#A88BE8] w-fit"
+                  className="text-xs text-[#555555] hover:text-black hover:italic transition-all w-fit"
                   id={`footer-nav-${link.href.replace('#', '')}`}
                 >
                   {link.label}
@@ -99,35 +96,35 @@ export default function Footer() {
 
           {/* Column 3: Contact details (lg:col-span-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="font-mono text-xs font-bold text-white uppercase tracking-widest">
+            <h4 className="font-mono text-[9px] font-semibold text-black uppercase tracking-[0.25em]">
               CONTATOS & LOCALIZAÇÃO
             </h4>
             
-            <address className="not-italic space-y-3.5 text-sm text-[#D6D8E2]/80">
+            <address className="not-italic space-y-3.5 text-xs text-[#555555]">
               <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#F9B27A] shrink-0 mt-0.5" />
-                <span className="font-light">São Paulo, SP - Engenharia Digital & Geoprocessamento</span>
+                <MapPin className="w-3.5 h-3.5 text-black shrink-0 mt-0.5" />
+                <span className="font-light">São Paulo, SP — Engenharia Digital & Geoprocessamento</span>
               </div>
               
               <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#A88BE8]" />
-                <a href="mailto:contato@centralmaps.com.br" className="hover:text-[#A88BE8] transition-colors font-light focus:outline-none">
+                <Mail className="w-3.5 h-3.5 text-black" />
+                <a href="mailto:contato@centralmaps.com.br" className="hover:text-black hover:underline transition-colors font-light">
                   contato@centralmaps.com.br
                 </a>
               </div>
 
               <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-emerald-400" />
-                <a href="tel:+5511999999999" className="hover:text-emerald-400 transition-colors font-light focus:outline-none">
+                <Phone className="w-3.5 h-3.5 text-black" />
+                <a href="tel:+5511999999999" className="hover:text-black hover:underline transition-colors font-light">
                   +55 (11) 99999-9999
                 </a>
               </div>
             </address>
 
             <div className="pt-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-[10px] text-[#F9B27A]">
-                <Globe className="w-3.5 h-3.5 text-[#A88BE8] animate-spin" style={{ animationDuration: '8s' }} />
-                CRS // EPSG_4326 // SIRGAS2000
+              <span className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#D9D9D9] rounded font-mono text-[8px] text-[#555555] uppercase tracking-wider">
+                <Globe className="w-3.5 h-3.5 text-black" />
+                CRS // EPSG_4326 // SYSTEM
               </span>
             </div>
           </div>
@@ -135,11 +132,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright legal & technology references */}
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-[#73798D]">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] font-mono text-[#555555]">
           <div>
             &copy; {currentYear} CENTRAL MAPS. TODOS OS DIREITOS RESERVADOS.
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 uppercase tracking-wider">
             <span>PLATFORM: CLOUD SPATIAL ENGINE</span>
             <span>•</span>
             <span>MAP RESOLUTION: 10M SPECTRAL</span>

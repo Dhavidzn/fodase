@@ -96,22 +96,18 @@ export default function Sectors() {
   const ActiveIcon = activeSectorObj.icon;
 
   return (
-    <section className="relative py-24 px-6 bg-[#131C35]/20 border-t border-white/5 overflow-hidden" id="setores">
-      {/* Background radial atmosphere */}
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#6F5BD3]/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section className="relative py-28 px-6 bg-[#F8F8F6] border-t border-[#D9D9D9] overflow-hidden" id="setores">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Heading */}
         <div className="mb-16">
-          <div className="inline-flex items-center gap-2 text-[#A88BE8] font-mono text-xs uppercase tracking-widest mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#A88BE8]" />
+          <div className="inline-block text-[#555555] font-mono text-[10px] uppercase tracking-[0.25em] mb-4">
             MERCADO E ATUAÇÃO
           </div>
-          <h2 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
+          <h2 className="font-display font-medium text-3xl sm:text-5xl text-black tracking-tight">
             Atendemos Diversos Setores
           </h2>
-          <p className="text-[#D6D8E2]/75 text-base sm:text-lg max-w-2xl mt-4 font-light">
+          <p className="text-[#555555] text-sm max-w-xl mt-4 font-light leading-relaxed">
             A versatilidade da inteligência espacial nos permite entregar soluções customizadas para as demandas críticas de diferentes ramos de mercado.
           </p>
         </div>
@@ -119,7 +115,7 @@ export default function Sectors() {
         {/* Layout split: Left sector grid, Right sector detail panel */}
         <div className="flex flex-col lg:flex-row gap-12 items-stretch">
           
-          {/* Left Grid Area: Clickable Badges (Area of touch >= 44px) */}
+          {/* Left Grid Area: Clickable Badges */}
           <div className="lg:w-3/5 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {sectors.map((sector) => {
               const IconComp = sector.icon;
@@ -128,26 +124,28 @@ export default function Sectors() {
                 <button
                   key={sector.id}
                   onClick={() => setSelectedSector(sector.id)}
-                  className={`flex items-center gap-4 p-4 rounded-xl text-left transition-all duration-300 min-h-[56px] focus:outline-none focus:ring-2 focus:ring-[#A88BE8] ${
+                  className={`flex items-center gap-4 p-4 rounded text-left transition-all duration-200 min-h-[56px] focus:outline-none ${
                     isSelected 
-                      ? 'bg-[#131C35] border border-[#A88BE8]/40 shadow-soft-glow' 
-                      : 'bg-glass border border-white/5 hover:border-white/20'
+                      ? 'bg-black text-white border border-black' 
+                      : 'bg-white border border-[#D9D9D9] text-[#555555] hover:border-black hover:text-black'
                   }`}
                   id={`sector-btn-${sector.id}`}
                   aria-label={`Ver informações do setor ${sector.name}`}
                 >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border ${
-                    isSelected ? 'bg-[#A88BE8]/10 border-[#A88BE8]/30 text-[#F9B27A]' : 'bg-white/5 border-white/10 text-white/50'
+                  <div className={`w-8 h-8 rounded flex items-center justify-center shrink-0 border ${
+                    isSelected ? 'bg-neutral-800 border-neutral-700 text-white' : 'bg-[#F8F8F6] border-[#D9D9D9] text-[#555555]'
                   }`}>
-                    <IconComp className="w-5 h-5" />
+                    <IconComp className="w-4 h-4" />
                   </div>
-                  <div>
-                    <span className={`block text-sm font-semibold transition-colors ${
-                      isSelected ? 'text-white' : 'text-[#D6D8E2]/90'
+                  <div className="truncate">
+                    <span className={`block text-xs font-semibold transition-colors ${
+                      isSelected ? 'text-white' : 'text-black'
                     }`}>
                       {sector.name}
                     </span>
-                    <span className="block text-[11px] text-[#73798D] truncate max-w-[200px] font-light">
+                    <span className={`block text-[10px] truncate max-w-[180px] font-light ${
+                      isSelected ? 'text-neutral-400' : 'text-[#555555]'
+                    }`}>
                       {sector.description}
                     </span>
                   </div>
@@ -156,35 +154,32 @@ export default function Sectors() {
             })}
           </div>
 
-          {/* Right Detail Panel: Displaying detailed information of selected sector */}
+          {/* Right Detail Panel */}
           <div className="lg:w-2/5 flex">
-            <div className="w-full bg-glass rounded-[24px] p-8 md:p-10 border border-white/10 flex flex-col justify-between relative overflow-hidden shadow-floating-card">
-              {/* Mesh background effect */}
-              <div className="absolute -top-32 -right-32 w-64 h-64 bg-[#A88BE8]/5 rounded-full blur-3xl pointer-events-none" />
-
+            <div className="w-full bg-white rounded p-8 md:p-10 border border-[#D9D9D9] flex flex-col justify-between relative overflow-hidden">
               <div>
                 {/* Panel Icon Frame */}
-                <div className="w-14 h-14 bg-[#131C35] rounded-2xl flex items-center justify-center border border-white/10 mb-6">
-                  <ActiveIcon className="w-7 h-7 text-[#F9B27A]" />
+                <div className="w-12 h-12 bg-[#F8F8F6] border border-[#D9D9D9] rounded flex items-center justify-center mb-8">
+                  <ActiveIcon className="w-5 h-5 text-black" />
                 </div>
 
-                <span className="font-mono text-[10px] text-[#A88BE8] tracking-widest uppercase font-bold block mb-2">
+                <span className="font-mono text-[9px] text-[#555555] tracking-[0.25em] uppercase font-medium block mb-2">
                   SETOR DETALHADO // 0{sectors.findIndex(s => s.id === selectedSector) + 1}
                 </span>
 
-                <h3 className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight mb-4">
+                <h3 className="font-display font-medium text-2xl sm:text-3xl text-black tracking-tight mb-4">
                   {activeSectorObj.name}
                 </h3>
 
-                <p className="text-[#D6D8E2]/90 text-sm sm:text-base leading-relaxed font-light mb-8">
+                <p className="text-[#555555] text-xs leading-relaxed font-light mb-8">
                   {activeSectorObj.details}
                 </p>
               </div>
 
               {/* Dynamic decorative map watermark */}
-              <div className="pt-6 border-t border-white/5 flex items-center gap-3 text-[#73798D] font-mono text-[11px]">
-                <Globe2 className="w-4 h-4 text-[#A88BE8] animate-pulse" />
-                <span>COORDINATES // CRS_WGS84_GEO</span>
+              <div className="pt-6 border-t border-[#D9D9D9] flex items-center gap-3 text-[#555555] font-mono text-[10px]">
+                <Globe2 className="w-3.5 h-3.5 text-black" />
+                <span className="tracking-wider">CRS // WGS84_GEO // SYSTEM_ACTIVE</span>
               </div>
             </div>
           </div>

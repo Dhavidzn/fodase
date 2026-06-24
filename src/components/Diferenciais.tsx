@@ -3,56 +3,47 @@ import { Award, Sliders, Zap, ShieldCheck } from 'lucide-react';
 import { DifferentialItem } from '../types';
 
 export default function Diferenciais() {
-  const items: (DifferentialItem & { icon: any; colorClass: string })[] = [
+  const items: (DifferentialItem & { icon: any })[] = [
     {
       id: 'especializacao',
       title: 'Especialização Técnica',
-      description: 'Equipe com experiência em geotecnologias, análise de dados e desenvolvimento de software.',
-      icon: Award,
-      colorClass: 'text-[#A88BE8]'
+      description: 'Equipe com experiência profunda em geotecnologias, análise de dados e engenharia de software integrada.',
+      icon: Award
     },
     {
       id: 'solucoes',
       title: 'Soluções Personalizadas',
-      description: 'Cada projeto é desenvolvido de acordo com os objetivos e necessidades do cliente.',
-      icon: Sliders,
-      colorClass: 'text-[#F9B27A]'
+      description: 'Cada projeto é estruturado de acordo com as necessidades estratégicas e os objetivos do negócio.',
+      icon: Sliders
     },
     {
       id: 'tecnologia',
       title: 'Tecnologia de Ponta',
-      description: 'Utilizamos ferramentas modernas para garantir precisão, eficiência e escalabilidade.',
-      icon: Zap,
-      colorClass: 'text-[#FF9B5A]'
+      description: 'Utilizamos ferramentas modernas para garantir a máxima precisão, eficiência analítica e escalabilidade.',
+      icon: Zap
     },
     {
       id: 'resultados',
       title: 'Resultados Confiáveis',
-      description: 'Entregamos produtos que auxiliam na tomada de decisão e agregam valor ao seu negócio.',
-      icon: ShieldCheck,
-      colorClass: 'text-emerald-400'
+      description: 'Entregamos produtos cartográficos que otimizam a tomada de decisão e agregam valor real ao seu negócio.',
+      icon: ShieldCheck
     }
   ];
 
   return (
-    <section className="relative py-24 px-6 bg-[#0A0D18] overflow-hidden" id="diferenciais">
-      {/* Decorative orbital line elements in background */}
-      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full border border-white/5 opacity-40 pointer-events-none -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute top-1/2 right-0 w-[600px] h-[600px] rounded-full border border-white/5 opacity-20 pointer-events-none -translate-y-1/2 translate-x-1/2" />
-
+    <section className="relative py-28 px-6 bg-[#F8F8F6] border-t border-[#D9D9D9] overflow-hidden" id="diferenciais">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 text-[#F9B27A] font-mono text-xs uppercase tracking-widest mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#F9B27A]" />
+          <div className="inline-block text-[#555555] font-mono text-[10px] uppercase tracking-[0.25em] mb-4">
             DIFERENCIAIS COMPETITIVOS
           </div>
-          <h2 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
-            Por Que Escolher a Central Maps?
+          <h2 className="font-display font-medium text-3xl sm:text-5xl text-black tracking-tight">
+            Por Que Escolher a <span className="italic font-normal">Central Maps</span>?
           </h2>
-          <p className="text-[#D6D8E2]/75 text-base sm:text-lg mt-4 font-light">
-            Unimos engenharia cartográfica e engenharia de software para construir soluções espaciais integradas com os mais altos padrões de rigor técnico.
+          <p className="text-[#555555] text-sm mt-4 font-light leading-relaxed max-w-xl mx-auto">
+            Unimos engenharia cartográfica e arquitetura de software para construir soluções espaciais com rigor metodológico e padrões de estética moderna.
           </p>
         </div>
 
@@ -63,36 +54,32 @@ export default function Diferenciais() {
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="bg-glass rounded-[24px] p-8 md:p-10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-premium-glow group border border-white/5 hover:border-white/10"
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-lg p-8 md:p-10 relative overflow-hidden transition-all duration-300 hover:border-black border border-[#D9D9D9] group"
                 id={`diff-card-${item.id}`}
               >
-                {/* Glowing Corner Background element */}
-                <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#6F5BD3]/5 rounded-full blur-2xl group-hover:bg-[#6F5BD3]/10 transition-all duration-500" />
-
-                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-start">
-                  {/* Glowing Icon Frame */}
-                  <div className="w-14 h-14 bg-[#131C35] rounded-2xl flex items-center justify-center shrink-0 border border-white/10 group-hover:border-[#F9B27A]/30 transition-all duration-300 shadow-soft-glow">
-                    <Icon className={`w-7 h-7 ${item.colorClass}`} />
+                <div className="relative z-10 flex flex-col sm:flex-row gap-6 items-start">
+                  {/* Icon Box */}
+                  <div className="w-12 h-12 bg-[#F8F8F6] border border-[#D9D9D9] rounded flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white group-hover:border-black transition-colors duration-300">
+                    <Icon className="w-5 h-5 text-black group-hover:text-white transition-colors duration-300" />
                   </div>
 
                   {/* Copy content */}
                   <div className="space-y-3">
-                    <h3 className="font-display font-semibold text-2xl text-white tracking-tight group-hover:text-[#F9B27A] transition-colors duration-300">
+                    <h3 className="font-display font-medium text-xl text-black tracking-tight group-hover:italic transition-all duration-300">
                       {item.title}
                     </h3>
-                    <p className="text-[#D6D8E2]/80 text-sm sm:text-base leading-relaxed font-light">
+                    <p className="text-[#555555] text-xs leading-relaxed font-light">
                       {item.description}
                     </p>
                   </div>
                 </div>
 
-                {/* Cyberpunk Grid accent lines in corners */}
-                <div className="absolute bottom-4 right-4 opacity-10 group-hover:opacity-30 transition-opacity font-mono text-[9px] text-white">
-                  REF_SYS // {item.id.toUpperCase()}_MOD
+                <div className="absolute bottom-4 right-4 opacity-40 font-mono text-[8px] text-[#555555]">
+                  SYS // {item.id.toUpperCase()}
                 </div>
               </motion.div>
             );

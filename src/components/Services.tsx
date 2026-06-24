@@ -92,41 +92,41 @@ export default function Services() {
   ];
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden bg-[#0A0D18]" id="servicos">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#6F5BD3]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#A88BE8]/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section className="relative py-28 px-6 overflow-hidden bg-[#F8F8F6] border-t border-[#D9D9D9]" id="servicos">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Intro Sub-section */}
         <div id="introducao" className="mb-24 scroll-mt-24 max-w-4xl">
-          <div className="inline-flex items-center gap-2 text-[#A88BE8] font-mono text-xs uppercase tracking-widest mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#A88BE8] animate-pulse" />
+          <div className="inline-block text-[#555555] font-mono text-[10px] uppercase tracking-[0.25em] mb-4">
             CONEXÃO DE DADOS & TECNOLOGIA
           </div>
-          <h2 className="font-display font-bold text-3xl sm:text-5xl tracking-tight text-white mb-6">
-            Soluções Inteligentes para um Mundo Orientado por Dados
+          <h2 className="font-display font-medium text-3xl sm:text-5xl md:text-6xl tracking-tight text-black mb-6">
+            Soluções Inteligentes para um <br />
+            <span className="italic font-normal">Mundo Orientado por Dados</span>
           </h2>
-          <div className="space-y-6 text-[#D6D8E2] text-lg leading-relaxed max-w-3xl font-light">
+          <div className="space-y-6 text-[#555555] text-base leading-relaxed max-w-3xl font-light">
             <p>
-              A <span className="font-semibold text-white">Central Maps</span> une tecnologia geoespacial, análise de dados e desenvolvimento digital para entregar soluções completas que auxiliam na tomada de decisão, otimização de processos e geração de resultados.
+              A <span className="font-medium text-black">Central Maps</span> une tecnologia geoespacial, análise de dados e desenvolvimento digital para entregar soluções completas que auxiliam na tomada de decisão, otimização de processos e geração de resultados de alto impacto.
             </p>
-            <p className="border-l-2 border-[#F9B27A] pl-6 italic text-[#D6D8E2]/85">
+            <p className="border-l border-black pl-6 italic text-black/90">
               Atuamos desde a aquisição e processamento de dados geográficos até o desenvolvimento de plataformas web, sistemas personalizados e landing pages de alta performance.
             </p>
           </div>
         </div>
 
         {/* Section Heading */}
-        <div className="mb-16">
-          <div className="inline-flex items-center gap-2 text-[#F9B27A] font-mono text-xs uppercase tracking-widest mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#F9B27A]" />
-            NOSSOS SERVIÇOS
+        <div className="mb-16 border-b border-[#D9D9D9] pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="text-black font-mono text-[10px] uppercase tracking-[0.25em] mb-2">
+              NOSSOS SERVIÇOS
+            </div>
+            <p className="text-xs font-mono text-[#555555] tracking-wider uppercase">
+              EXPLORE AS NOSSAS VERTICAIS DE EXECUÇÃO
+            </p>
           </div>
-          <p className="text-sm font-mono text-[#73798D] tracking-wider uppercase mt-1">
-            EXPLORE NOSSAS SEIS VERTICAIS DE EXECUÇÃO
-          </p>
+          <span className="font-mono text-xs text-[#555555]">
+            SYS // VERTICAL_GRID
+          </span>
         </div>
 
         {/* Services Grid (3x2) */}
@@ -136,37 +136,37 @@ export default function Services() {
             return (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-glass rounded-[24px] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft-glow group"
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="bg-white border border-[#D9D9D9] rounded-lg p-8 flex flex-col justify-between transition-all duration-300 hover:border-black group"
                 id={`card-${service.id}`}
               >
                 <div>
                   {/* Card Icon Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 bg-[#131C35] rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-[#A88BE8]/30 transition-colors duration-300">
-                      <Icon className="w-6 h-6 text-[#F9B27A] group-hover:text-[#A88BE8] transition-colors duration-300" />
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="w-10 h-10 bg-black text-white rounded flex items-center justify-center">
+                      <Icon className="w-5 h-5" />
                     </div>
-                    <span className="font-mono text-[11px] text-white/20 group-hover:text-[#A88BE8]/40 transition-colors duration-300 font-semibold tracking-widest">
-                      // 0{index + 1}
+                    <span className="font-mono text-[10px] text-[#555555]/60 group-hover:text-black transition-colors duration-300 tracking-[0.25em]">
+                      0{index + 1}
                     </span>
                   </div>
 
                   {/* Card Title & Desc */}
-                  <h3 className="font-display font-semibold text-2xl text-white mb-3 tracking-tight group-hover:text-[#F9B27A] transition-colors duration-300">
+                  <h3 className="font-display font-medium text-xl text-black mb-3 tracking-tight group-hover:italic transition-all duration-300">
                     {service.title}
                   </h3>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed mb-6 font-light">
+                  <p className="text-[#555555] text-xs leading-relaxed mb-6 font-light">
                     {service.description}
                   </p>
 
                   {/* Bullet List */}
-                  <ul className="space-y-2.5 border-t border-white/5 pt-5" aria-label={`Sub-serviços de ${service.title}`}>
+                  <ul className="space-y-3 border-t border-[#D9D9D9] pt-6" aria-label={`Sub-serviços de ${service.title}`}>
                     {service.items.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-xs text-[#D6D8E2]/70 group-hover:text-[#D6D8E2] transition-colors duration-200">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#A88BE8] shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                      <li key={idx} className="flex items-start gap-2 text-[11px] text-[#555555] group-hover:text-black transition-colors duration-200">
+                        <span className="w-1 h-1 bg-black rounded-full mt-1.5 shrink-0" />
                         <span className="leading-normal">{item}</span>
                       </li>
                     ))}

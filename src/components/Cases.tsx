@@ -114,67 +114,64 @@ export default function Cases() {
   };
 
   return (
-    <section className="relative py-24 px-6 bg-[#131C35]/30 border-y border-white/5 overflow-hidden" id="casos">
-      {/* Glow Backdrops */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#6F5BD3]/5 rounded-full blur-[120px] pointer-events-none" />
-
+    <section className="relative py-28 px-6 bg-[#F8F8F6] border-t border-[#D9D9D9] overflow-hidden" id="casos">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#A88BE8] font-mono text-xs uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#A88BE8]" />
+            <div className="text-[#555555] font-mono text-[10px] uppercase tracking-[0.25em] mb-4">
               CASOS DE ESTUDO & PROJETOS
             </div>
-            <h2 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
-              Aplicações Práticas Desenvolvidas
+            <h2 className="font-display font-medium text-3xl sm:text-5xl text-black tracking-tight">
+              Aplicações Práticas <br />
+              <span className="italic font-normal">e Estudos de Território</span>
             </h2>
-            <p className="text-[#D6D8E2]/75 text-base sm:text-lg max-w-2xl mt-4 font-light">
+            <p className="text-[#555555] text-sm max-w-xl mt-4 font-light tracking-wide">
               Explore o funcionamento real dos mapas, dashboards, imagens de satélite e sistemas digitais que desenvolvemos para otimizar operações.
             </p>
           </div>
 
           {/* Interactive Navigation Tabs */}
-          <div className="flex flex-wrap gap-2.5 bg-[#0A0D18]/80 p-1.5 rounded-2xl border border-white/5 backdrop-blur-md">
+          <div className="flex flex-wrap gap-1 bg-[#FFFFFF] p-1 rounded border border-[#D9D9D9]">
             <button
               onClick={() => setActiveTab('satellite')}
-              className={`flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all duration-300 ${
-                activeTab === 'satellite' ? 'bg-[#A88BE8] text-[#0A0D18]' : 'text-[#D6D8E2]/70 hover:text-white hover:bg-white/5'
+              className={`flex items-center gap-2 text-[10px] font-mono font-medium uppercase tracking-[0.15em] py-2 px-3 rounded transition-all duration-200 ${
+                activeTab === 'satellite' ? 'bg-black text-white' : 'text-[#555555] hover:text-black'
               }`}
               aria-label="Ver Caso de Imagens de Satélite"
               id="tab-satellite"
             >
-              <ImageIcon className="w-4 h-4" />
+              <ImageIcon className="w-3.5 h-3.5" />
               Sensoriamento
             </button>
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all duration-300 ${
-                activeTab === 'dashboard' ? 'bg-[#A88BE8] text-[#0A0D18]' : 'text-[#D6D8E2]/70 hover:text-white hover:bg-white/5'
+              className={`flex items-center gap-2 text-[10px] font-mono font-medium uppercase tracking-[0.15em] py-2 px-3 rounded transition-all duration-200 ${
+                activeTab === 'dashboard' ? 'bg-black text-white' : 'text-[#555555] hover:text-black'
               }`}
               aria-label="Ver Caso de Dashboards Interativos"
               id="tab-dashboard"
             >
-              <Activity className="w-4 h-4" />
+              <Activity className="w-3.5 h-3.5" />
               Dashboard
             </button>
             <button
               onClick={() => setActiveTab('gis')}
-              className={`flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all duration-300 ${
-                activeTab === 'gis' ? 'bg-[#A88BE8] text-[#0A0D18]' : 'text-[#D6D8E2]/70 hover:text-white hover:bg-white/5'
+              className={`flex items-center gap-2 text-[10px] font-mono font-medium uppercase tracking-[0.15em] py-2 px-3 rounded transition-all duration-200 ${
+                activeTab === 'gis' ? 'bg-black text-white' : 'text-[#555555] hover:text-black'
               }`}
               aria-label="Ver Caso de Plataformas GIS"
               id="tab-gis"
             >
-              <Layers className="w-4 h-4" />
+              <Layers className="w-3.5 h-3.5" />
               Sistemas GIS
             </button>
           </div>
         </div>
 
         {/* Tab Content Display Container */}
-        <div className="bg-glass rounded-[32px] p-6 md:p-10 border border-white/10 min-h-[500px] flex flex-col lg:flex-row gap-10 shadow-floating-card">
+        <div className="bg-white rounded-lg p-6 md:p-10 border border-[#D9D9D9] min-h-[500px] flex flex-col lg:flex-row gap-10">
           
           <AnimatePresence mode="wait">
             
@@ -182,31 +179,32 @@ export default function Cases() {
             {activeTab === 'satellite' && (
               <motion.div
                 key="satellite"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 className="w-full flex flex-col lg:flex-row gap-10 items-center justify-between"
               >
                 {/* Left explanation info */}
                 <div className="lg:w-2/5 space-y-6">
-                  <span className="font-mono text-xs font-bold text-[#F9B27A] tracking-widest uppercase">
+                  <span className="font-mono text-[10px] font-medium text-black tracking-[0.25em] uppercase block">
                     CASO 01 // SENSORIAMENTO REMOTO
                   </span>
-                  <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white tracking-tight">
-                    Análise Multiespectral por Satélite
+                  <h3 className="font-display font-medium text-2xl sm:text-3xl text-black tracking-tight">
+                    Análise Multiespectral <br />
+                    <span className="italic font-normal">por Satélite</span>
                   </h3>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
                     O processamento avançado de imagens orbitais de sensores como o Sentinel-2 permite a classificação automática do uso da terra e o cálculo de índices biofísicos.
                   </p>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
-                    Arraste o cursor deslizante no mapa ao lado para comparar a <strong className="text-white">Imagem Natural RGB</strong> com o <strong className="text-[#F9B27A]">Índice de Vegetação de Diferença Normalizada (NDVI)</strong> processado pela nossa equipe, mapeando florestas saudáveis (em verde brilhante) de solos expostos ou áreas antropizadas.
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
+                    Arraste o cursor deslizante no mapa ao lado para comparar a <strong className="text-black font-semibold">Imagem Natural RGB</strong> com o <strong className="text-black font-semibold">Índice de Vegetação de Diferença Normalizada (NDVI)</strong> processado pela nossa equipe, mapeando florestas saudáveis de solos expostos ou áreas antropizadas.
                   </p>
                   
                   {/* Tech specs readout */}
-                  <div className="bg-[#0A0D18]/60 p-4 rounded-2xl border border-white/5 font-mono text-xs space-y-2">
-                    <div className="flex justify-between"><span className="text-[#73798D]">SENSORES:</span> <span className="text-white">Sentinel-2 MSI</span></div>
-                    <div className="flex justify-between"><span className="text-[#73798D]">RESOLUÇÃO:</span> <span className="text-white">10 metros espectrais</span></div>
-                    <div className="flex justify-between"><span className="text-[#73798D]">ALGORITMO:</span> <span className="text-[#A88BE8]">NDVI Spectral Index</span></div>
+                  <div className="bg-[#F8F8F6] p-4 rounded border border-[#D9D9D9] font-mono text-[10px] space-y-2">
+                    <div className="flex justify-between"><span className="text-[#555555]">SENSORES:</span> <span className="text-black font-medium">Sentinel-2 MSI</span></div>
+                    <div className="flex justify-between"><span className="text-[#555555]">RESOLUÇÃO:</span> <span className="text-black font-medium">10 metros espectrais</span></div>
+                    <div className="flex justify-between"><span className="text-[#555555]">ALGORITMO:</span> <span className="text-black font-medium">NDVI Spectral Index</span></div>
                   </div>
                 </div>
 
@@ -216,46 +214,46 @@ export default function Cases() {
                     ref={sliderRef}
                     onMouseDown={handleMouseDown}
                     onTouchStart={handleMouseDown}
-                    className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize select-none border border-white/10 shadow-premium-glow"
+                    className="relative w-full aspect-[4/3] rounded overflow-hidden cursor-ew-resize select-none border border-[#D9D9D9]"
                   >
                     {/* Natural RGB Background */}
                     <div 
-                      className="absolute inset-0 bg-[#131C35] bg-cover bg-center"
+                      className="absolute inset-0 bg-[#F8F8F6] bg-cover bg-center"
                       style={{
                         backgroundImage: `url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1200')`,
                       }}
                     >
                       {/* Tech Label */}
-                      <span className="absolute bottom-4 left-4 z-20 bg-[#0A0D18]/80 text-white font-mono text-[10px] py-1 px-2.5 rounded-md border border-white/15">
+                      <span className="absolute bottom-4 left-4 z-20 bg-black text-white font-mono text-[9px] py-1 px-2.5 uppercase tracking-wider">
                         FOTO REAL RGB (SAT)
                       </span>
                     </div>
 
                     {/* False Color NDVI Overlay with clip-path clip */}
                     <div 
-                      className="absolute inset-0 bg-cover bg-center mix-blend-color-dodge brightness-150 contrast-125"
+                      className="absolute inset-0 bg-cover bg-center grayscale contrast-125"
                       style={{
                         backgroundImage: `url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1200')`,
                         clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`
                       }}
                     >
-                      {/* Spectral Filter Gradient simulation */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-green-500/20 via-emerald-700/40 to-yellow-500/10 mix-blend-overlay" />
+                      {/* Spectral Filter simulation */}
+                      <div className="absolute inset-0 bg-black/40 mix-blend-overlay" />
                       
                       {/* Tech Label */}
-                      <span className="absolute bottom-4 right-4 z-20 bg-[#6F5BD3]/90 text-white font-mono text-[10px] py-1 px-2.5 rounded-md border border-white/15">
-                        ÍNDICE SPECTRAL NDVI (PROCESSADO)
+                      <span className="absolute bottom-4 right-4 z-20 bg-white text-black font-mono text-[9px] py-1 px-2.5 border border-black uppercase tracking-wider">
+                        PROCESSADO NDVI (FILTRADO)
                       </span>
                     </div>
 
                     {/* Drag Line Handle Divider */}
                     <div 
-                      className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#F9B27A] via-white to-[#A88BE8] z-30"
+                      className="absolute top-0 bottom-0 w-[1px] bg-black z-30"
                       style={{ left: `${sliderPosition}%` }}
                     >
                       {/* Circle Pointer Node */}
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white text-[#0A0D18] flex items-center justify-center shadow-floating-card border border-white">
-                        <Crosshair className="w-4 h-4 animate-spin" style={{ animationDuration: '6s' }} />
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black text-white flex items-center justify-center shadow-sm border border-black">
+                        <Crosshair className="w-3.5 h-3.5" />
                       </div>
                     </div>
                   </div>
@@ -267,36 +265,37 @@ export default function Cases() {
             {activeTab === 'dashboard' && (
               <motion.div
                 key="dashboard"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 className="w-full flex flex-col lg:flex-row gap-10 items-center justify-between"
               >
                 {/* Left Info Column */}
                 <div className="lg:w-2/5 space-y-6">
-                  <span className="font-mono text-xs font-bold text-[#F9B27A] tracking-widest uppercase">
+                  <span className="font-mono text-[10px] font-medium text-black tracking-[0.25em] uppercase block">
                     CASO 02 // ANALISE DE DADOS & BI
                   </span>
-                  <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white tracking-tight">
-                    Painéis de Indicadores Inteligentes
+                  <h3 className="font-display font-medium text-2xl sm:text-3xl text-black tracking-tight">
+                    Painéis de <br />
+                    <span className="italic font-normal">Indicadores Territoriais</span>
                   </h3>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
-                    Nossa equipe integra dados geográficos com bancos relacionais para gerar dashboards analíticos customizados em Business Intelligence.
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
+                    Nossa equipe integra dados geográficos com bancos relacionais para gerar dashboards analíticos customizados de forma elegante.
                   </p>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
                     Selecione uma bacia hidrográfica de exemplo abaixo para simular a atualização em tempo real de estatísticas territoriais cruciais para monitoramento ambiental e tomada de decisão:
                   </p>
 
                   {/* Dynamic Sector Switch Buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     {(['A', 'B', 'C'] as const).map((r) => (
                       <button
                         key={r}
                         onClick={() => setSelectedRegion(r)}
-                        className={`flex-1 py-2 px-3 rounded-xl font-mono text-xs font-bold transition-all border ${
+                        className={`flex-1 py-2 px-3 rounded font-mono text-[10px] font-medium tracking-wider uppercase transition-all border ${
                           selectedRegion === r 
-                            ? 'bg-[#131C35] text-[#F9B27A] border-[#F9B27A]' 
-                            : 'bg-[#0A0D18]/40 text-[#D6D8E2]/60 border-white/5 hover:border-white/20'
+                            ? 'bg-black text-white border-black' 
+                            : 'bg-[#F8F8F6] text-[#555555] border-[#D9D9D9] hover:border-black'
                         }`}
                         id={`btn-region-${r}`}
                       >
@@ -307,98 +306,98 @@ export default function Cases() {
                 </div>
 
                 {/* Right Interactive Dashboard Graphic */}
-                <div className="w-full lg:w-3/5 bg-[#0A0D18]/90 border border-white/10 rounded-2xl p-6 relative">
+                <div className="w-full lg:w-3/5 bg-[#F8F8F6] border border-[#D9D9D9] rounded p-6 relative">
                   {/* Dashboard Header decoration */}
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#D9D9D9]">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="font-mono text-[10px] text-[#73798D] tracking-widest uppercase">SPATIAL BI // METRICS PANEL // BACIA {selectedRegion}</span>
+                      <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                      <span className="font-mono text-[9px] text-black tracking-widest uppercase">SPATIAL BI // METRICS PANEL // BACIA {selectedRegion}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-white/50">REF_ID: 104-CM_SP</span>
+                    <span className="font-mono text-[9px] text-[#555555]">REF_ID: 104-CM_SP</span>
                   </div>
 
                   {/* Stats Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                    <div className="bg-[#131C35]/50 p-3.5 rounded-xl border border-white/5">
-                      <span className="block font-mono text-[10px] text-[#73798D] uppercase mb-1">Índice Vegetal (NDVI)</span>
-                      <span className="text-base font-semibold text-white">{regionMetrics[selectedRegion].vegetationIndex}</span>
+                    <div className="bg-white p-3.5 rounded border border-[#D9D9D9]">
+                      <span className="block font-mono text-[9px] text-[#555555] uppercase mb-1">Índice Vegetal (NDVI)</span>
+                      <span className="text-xs font-medium text-black">{regionMetrics[selectedRegion].vegetationIndex}</span>
                     </div>
-                    <div className="bg-[#131C35]/50 p-3.5 rounded-xl border border-white/5">
-                      <span className="block font-mono text-[10px] text-[#73798D] uppercase mb-1">CO2 Estocado</span>
-                      <span className="text-base font-semibold text-[#A88BE8]">{regionMetrics[selectedRegion].carbonStock}</span>
+                    <div className="bg-white p-3.5 rounded border border-[#D9D9D9]">
+                      <span className="block font-mono text-[9px] text-[#555555] uppercase mb-1">CO2 Estocado</span>
+                      <span className="text-xs font-medium text-black">{regionMetrics[selectedRegion].carbonStock}</span>
                     </div>
-                    <div className="bg-[#131C35]/50 p-3.5 rounded-xl border border-white/5 col-span-2 md:col-span-1">
-                      <span className="block font-mono text-[10px] text-[#73798D] uppercase mb-1">Alertas Desmatamento</span>
-                      <span className={`text-base font-semibold ${regionMetrics[selectedRegion].alertCount > 0 ? 'text-[#FF9B5A]' : 'text-emerald-400'}`}>
+                    <div className="bg-white p-3.5 rounded border border-[#D9D9D9] col-span-2 md:col-span-1">
+                      <span className="block font-mono text-[9px] text-[#555555] uppercase mb-1">Alertas Desmatamento</span>
+                      <span className="text-xs font-medium text-black">
                         {regionMetrics[selectedRegion].alertCount} detectados
                       </span>
                     </div>
                   </div>
 
-                  {/* SVG glowing Bar Chart */}
+                  {/* SVG Bar Chart */}
                   <div className="space-y-4">
-                    <span className="block font-mono text-[11px] text-[#73798D] uppercase font-bold tracking-wider mb-2">Composição de Cobertura e Uso do Solo</span>
+                    <span className="block font-mono text-[10px] text-black uppercase font-medium tracking-wider mb-2">Composição de Cobertura e Uso do Solo</span>
                     
                     {/* Native Forest Bar */}
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs font-mono text-[#D6D8E2]">
+                      <div className="flex justify-between text-[11px] font-mono text-black">
                         <span>Floresta Nativa</span>
-                        <span className="text-emerald-400 font-bold">{regionMetrics[selectedRegion].nativeForest}%</span>
+                        <span className="font-semibold">{regionMetrics[selectedRegion].nativeForest}%</span>
                       </div>
-                      <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-white border border-[#D9D9D9] rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${regionMetrics[selectedRegion].nativeForest}%` }}
                           transition={{ duration: 0.5 }}
-                          className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" 
+                          className="h-full bg-black rounded-full" 
                         />
                       </div>
                     </div>
 
                     {/* Pasture Bar */}
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs font-mono text-[#D6D8E2]">
+                      <div className="flex justify-between text-[11px] font-mono text-[#555555]">
                         <span>Pastagem / Agro</span>
-                        <span className="text-[#F9B27A] font-bold">{regionMetrics[selectedRegion].pasture}%</span>
+                        <span className="font-semibold text-black">{regionMetrics[selectedRegion].pasture}%</span>
                       </div>
-                      <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-white border border-[#D9D9D9] rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${regionMetrics[selectedRegion].pasture}%` }}
                           transition={{ duration: 0.5 }}
-                          className="h-full bg-gradient-to-r from-[#F9B27A] to-yellow-500 rounded-full" 
+                          className="h-full bg-neutral-600 rounded-full" 
                         />
                       </div>
                     </div>
 
                     {/* Urban Area Bar */}
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs font-mono text-[#D6D8E2]">
+                      <div className="flex justify-between text-[11px] font-mono text-[#555555]">
                         <span>Área Urbana</span>
-                        <span className="text-red-400 font-bold">{regionMetrics[selectedRegion].urban}%</span>
+                        <span className="font-semibold text-black">{regionMetrics[selectedRegion].urban}%</span>
                       </div>
-                      <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-white border border-[#D9D9D9] rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${regionMetrics[selectedRegion].urban}%` }}
                           transition={{ duration: 0.5 }}
-                          className="h-full bg-gradient-to-r from-red-500 to-[#FF9B5A] rounded-full" 
+                          className="h-full bg-neutral-400 rounded-full" 
                         />
                       </div>
                     </div>
 
                     {/* Water Bodies Bar */}
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs font-mono text-[#D6D8E2]">
+                      <div className="flex justify-between text-[11px] font-mono text-[#555555]">
                         <span>Corpos d'Água</span>
-                        <span className="text-cyan-400 font-bold">{regionMetrics[selectedRegion].water}%</span>
+                        <span className="font-semibold text-black">{regionMetrics[selectedRegion].water}%</span>
                       </div>
-                      <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-white border border-[#D9D9D9] rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${regionMetrics[selectedRegion].water}%` }}
                           transition={{ duration: 0.5 }}
-                          className="h-full bg-gradient-to-r from-cyan-500 to-[#6F5BD3] rounded-full" 
+                          className="h-full bg-neutral-300 rounded-full" 
                         />
                       </div>
                     </div>
@@ -411,67 +410,68 @@ export default function Cases() {
             {activeTab === 'gis' && (
               <motion.div
                 key="gis"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 className="w-full flex flex-col lg:flex-row gap-10 items-center justify-between"
               >
                 {/* Left Info Column */}
                 <div className="lg:w-2/5 space-y-6">
-                  <span className="font-mono text-xs font-bold text-[#F9B27A] tracking-widest uppercase">
+                  <span className="font-mono text-[10px] font-medium text-black tracking-[0.25em] uppercase block">
                     CASO 03 // SISTEMAS WEB E GIS
                   </span>
-                  <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white tracking-tight">
-                    Plataformas e Sistemas WebGIS
+                  <h3 className="font-display font-medium text-2xl sm:text-3xl text-black tracking-tight">
+                    Plataformas e <br />
+                    <span className="italic font-normal">Sistemas WebGIS</span>
                   </h3>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
                     Desenvolvemos aplicações web e painéis administrativos que integram visualização cartográfica interativa, servindo dados geográficos de forma performática.
                   </p>
-                  <p className="text-[#D6D8E2]/80 text-sm leading-relaxed font-light">
+                  <p className="text-[#555555] text-xs leading-relaxed font-light">
                     Interaja com a interface de simulação ao lado: ative/desative as camadas de dados (layers) e movimente seu cursor sobre o canvas de coordenadas para ver a marcação GPS em tempo real.
                   </p>
                   
                   {/* Layer switches */}
-                  <div className="bg-[#0A0D18]/60 p-5 rounded-2xl border border-white/5 space-y-3.5">
-                    <span className="block font-mono text-[10px] text-[#73798D] uppercase tracking-wider font-bold">Camadas de Informação (Toggles)</span>
+                  <div className="bg-[#F8F8F6] p-5 rounded border border-[#D9D9D9] space-y-3.5">
+                    <span className="block font-mono text-[9px] text-black uppercase tracking-wider font-semibold">Camadas de Informação</span>
                     
                     <label className="flex items-center justify-between cursor-pointer group" id="toggle-layer-contours">
-                      <span className="text-xs text-[#D6D8E2] group-hover:text-white transition-colors">Curvas de Nível (Contour)</span>
+                      <span className="text-xs text-[#555555] group-hover:text-black transition-colors">Curvas de Nível (Contour)</span>
                       <input 
                         type="checkbox" 
                         checked={activeLayers.contours} 
                         onChange={() => setActiveLayers(prev => ({ ...prev, contours: !prev.contours }))}
-                        className="w-4 h-4 rounded border-white/10 bg-white/5 accent-[#A88BE8] cursor-pointer"
+                        className="w-4 h-4 rounded border-[#D9D9D9] accent-black cursor-pointer"
                       />
                     </label>
 
                     <label className="flex items-center justify-between cursor-pointer group" id="toggle-layer-hydrography">
-                      <span className="text-xs text-[#D6D8E2] group-hover:text-white transition-colors">Drenagem e Hidrografia</span>
+                      <span className="text-xs text-[#555555] group-hover:text-black transition-colors">Drenagem e Hidrografia</span>
                       <input 
                         type="checkbox" 
                         checked={activeLayers.hydrography} 
                         onChange={() => setActiveLayers(prev => ({ ...prev, hydrography: !prev.hydrography }))}
-                        className="w-4 h-4 rounded border-white/10 bg-white/5 accent-[#A88BE8] cursor-pointer"
+                        className="w-4 h-4 rounded border-[#D9D9D9] accent-black cursor-pointer"
                       />
                     </label>
 
                     <label className="flex items-center justify-between cursor-pointer group" id="toggle-layer-risk">
-                      <span className="text-xs text-[#D6D8E2] group-hover:text-white transition-colors">Zonas de Risco Geotécnico</span>
+                      <span className="text-xs text-[#555555] group-hover:text-black transition-colors">Zonas de Risco Geotécnico</span>
                       <input 
                         type="checkbox" 
                         checked={activeLayers.riskZones} 
                         onChange={() => setActiveLayers(prev => ({ ...prev, riskZones: !prev.riskZones }))}
-                        className="w-4 h-4 rounded border-white/10 bg-white/5 accent-[#A88BE8] cursor-pointer"
+                        className="w-4 h-4 rounded border-[#D9D9D9] accent-black cursor-pointer"
                       />
                     </label>
 
                     <label className="flex items-center justify-between cursor-pointer group" id="toggle-layer-boundaries">
-                      <span className="text-xs text-[#D6D8E2] group-hover:text-white transition-colors">Limites de Propriedade (CAR)</span>
+                      <span className="text-xs text-[#555555] group-hover:text-black transition-colors">Limites de Propriedade (CAR)</span>
                       <input 
                         type="checkbox" 
                         checked={activeLayers.boundaries} 
                         onChange={() => setActiveLayers(prev => ({ ...prev, boundaries: !prev.boundaries }))}
-                        className="w-4 h-4 rounded border-white/10 bg-white/5 accent-[#A88BE8] cursor-pointer"
+                        className="w-4 h-4 rounded border-[#D9D9D9] accent-black cursor-pointer"
                       />
                     </label>
                   </div>
@@ -481,47 +481,47 @@ export default function Cases() {
                 <div className="w-full lg:w-3/5">
                   <div 
                     onMouseMove={handleGisMouseMove}
-                    className="relative w-full aspect-[4/3] bg-[#0A0D18] border border-white/10 rounded-2xl overflow-hidden shadow-floating-card group"
+                    className="relative w-full aspect-[4/3] bg-[#F8F8F6] border border-[#D9D9D9] rounded overflow-hidden group"
                     id="gis-canvas"
                   >
                     {/* Simulated Map Grid/Coordinates Backdrop */}
-                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]" />
+                    <div className="absolute inset-0 opacity-[0.1] bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:24px_24px]" />
                     
                     {/* Coordinate lines */}
-                    <div className="absolute top-1/2 inset-x-0 h-[1px] bg-white/10 border-dashed" />
-                    <div className="absolute left-1/2 inset-y-0 w-[1px] bg-white/10 border-dashed" />
+                    <div className="absolute top-1/2 inset-x-0 h-[1px] bg-black/5 border-dashed" />
+                    <div className="absolute left-1/2 inset-y-0 w-[1px] bg-black/5 border-dashed" />
 
                     {/* Simulated SVG Cartographic layers */}
                     <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
                       
                       {/* Curvas de Nivel Layer */}
                       {activeLayers.contours && (
-                        <g stroke="rgba(168, 139, 232, 0.4)" strokeWidth="1.2" fill="none" strokeDasharray="3,3">
+                        <g stroke="rgba(0, 0, 0, 0.2)" strokeWidth="1.2" fill="none" strokeDasharray="3,3">
                           <path d="M 50,50 Q 150,120 200,80 T 350,150" />
                           <path d="M 50,100 Q 140,160 210,130 T 350,200" />
                           <path d="M 50,150 Q 130,200 220,180 T 350,250" />
                         </g>
                       )}
 
-                      {/* Hydrography Layer (Blue rivers) */}
+                      {/* Hydrography Layer */}
                       {activeLayers.hydrography && (
-                        <g stroke="#38bdf8" strokeWidth="2.5" fill="none">
+                        <g stroke="#000000" strokeWidth="1.5" fill="none">
                           <path d="M 0,280 Q 120,200 180,240 T 400,60" />
-                          <path d="M 180,240 Q 220,280 300,290" opacity="0.6" strokeWidth="1.5" />
+                          <path d="M 180,240 Q 220,280 300,290" opacity="0.4" strokeWidth="1.0" />
                         </g>
                       )}
 
-                      {/* Risk Zones Layer (Red outline, filled translucent) */}
+                      {/* Risk Zones Layer */}
                       {activeLayers.riskZones && (
-                        <g stroke="#f87171" strokeWidth="1.5" fill="rgba(248, 113, 113, 0.15)">
+                        <g stroke="#555555" strokeWidth="1.5" fill="rgba(0, 0, 0, 0.05)">
                           <circle cx="150" cy="110" r="45" />
                           <polygon points="260,180 310,190 290,230 240,210" />
                         </g>
                       )}
 
-                      {/* Property Boundaries (Yellow polygonal border) */}
+                      {/* Property Boundaries */}
                       {activeLayers.boundaries && (
-                        <g stroke="#fbbf24" strokeWidth="1.5" fill="none" strokeDasharray="2,2">
+                        <g stroke="#000000" strokeWidth="1.5" fill="none" strokeDasharray="2,2">
                           <polygon points="80,40 220,30 280,100 120,150" />
                         </g>
                       )}
@@ -530,18 +530,18 @@ export default function Cases() {
 
                     {/* Floating GPS Target Circle Reticle on hover */}
                     <div className="absolute inset-0 bg-transparent flex items-center justify-center">
-                      <div className="bg-[#131C35]/90 border border-[#A88BE8]/50 backdrop-blur-md py-2 px-3.5 rounded-lg text-[11px] font-mono shadow-floating-card flex items-center gap-2 pointer-events-none z-20">
-                        <Crosshair className="w-3.5 h-3.5 text-[#F9B27A] animate-pulse" />
+                      <div className="bg-white border border-black py-2 px-3.5 rounded text-[10px] font-mono shadow-sm flex items-center gap-2 pointer-events-none z-20">
+                        <Crosshair className="w-3.5 h-3.5 text-black" />
                         <div>
-                          <div className="text-white">LAT: {coords.lat.toFixed(6)}</div>
-                          <div className="text-[#A88BE8]">LNG: {coords.lng.toFixed(6)}</div>
+                          <div className="text-black font-semibold">LAT: {coords.lat.toFixed(6)}</div>
+                          <div className="text-[#555555]">LNG: {coords.lng.toFixed(6)}</div>
                         </div>
                       </div>
                     </div>
 
                     {/* Watermark markings */}
-                    <div className="absolute bottom-4 left-4 z-10 text-white/30 font-mono text-[9px]">
-                      SYSTEM STATE: ONLINE // RESOLUTION_OK
+                    <div className="absolute bottom-4 left-4 z-10 text-black/30 font-mono text-[8px]">
+                      SYSTEM STATE: ONLINE // CRS_WGS84_GEO
                     </div>
                   </div>
                 </div>

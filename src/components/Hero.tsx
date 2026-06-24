@@ -323,11 +323,11 @@ export default function Hero() {
   return (
     <div 
       ref={containerRef} 
-      className="relative w-full h-[350vh] bg-[#0A0D18]" 
+      className="relative w-full h-[350vh] bg-[#F8F8F6]" 
       id="hero-track"
     >
       {/* Sticky viewport container (100vh) */}
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[#0A0D18]">
+      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black">
         
         {/* Visual Fallback during load or in case of error */}
         {(loadError || !isVideoLoaded) && (
@@ -346,7 +346,7 @@ export default function Hero() {
           <canvas
             ref={canvasRef}
             className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 transition-opacity duration-1000 ${
-              isVideoLoaded ? 'opacity-80' : 'opacity-0'
+              isVideoLoaded ? 'opacity-70' : 'opacity-0'
             }`}
             style={{
               willChange: 'transform',
@@ -359,45 +359,49 @@ export default function Hero() {
         {/* Subtle, non-blocking background progress bar and status indicator */}
         {loadedCount < totalFrames && !loadError && (
           <div className="absolute top-24 right-6 z-30 flex flex-col items-end gap-1.5 pointer-events-none">
-            <div className="flex items-center gap-2 bg-[#0A0D18]/80 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md shadow-lg">
-              <Orbit className="w-3.5 h-3.5 text-[#A88BE8] animate-spin" />
-              <span className="font-mono text-[10px] text-white/80 uppercase tracking-wider">
-                CARREGANDO ORBITAL: {Math.round((loadedCount / totalFrames) * 100)}%
+            <div className="flex items-center gap-2 bg-black border border-white/20 px-3 py-1.5 rounded shadow-sm">
+              <Orbit className="w-3.5 h-3.5 text-white animate-spin" />
+              <span className="font-mono text-[9px] text-white uppercase tracking-[0.15em]">
+                PRELOADING: {Math.round((loadedCount / totalFrames) * 100)}%
               </span>
             </div>
             {/* Tiny progress bar */}
-            <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden border border-white/5">
+            <div className="w-24 h-[1px] bg-white/20 overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-[#A88BE8] to-[#F9B27A] transition-all duration-300"
+                className="h-full bg-white transition-all duration-300"
                 style={{ width: `${Math.round((loadedCount / totalFrames) * 100)}%` }}
               />
             </div>
           </div>
         )}
 
-        {/* Ambient Overlay: Dark, blue-purple glow mesh overlay */}
+        {/* Ambient Overlay: Dark elegant luxury overlay */}
         <div 
-          className="absolute inset-0 bg-gradient-to-b from-[#0A0D18]/50 via-[#0A0D18]/70 to-[#0A0D18] z-10"
+          className="absolute inset-0 bg-black/40 z-10"
           style={{
-            backgroundImage: `radial-gradient(circle at center, rgba(10, 13, 24, 0.4) 0%, rgba(10, 13, 24, 0.95) 100%)`
+            backgroundImage: `radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%)`
           }}
         />
-
-        {/* Tech Grid Pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]" />
-
+ 
+        {/* Stark Editorial Grid Lines */}
+        <div className="absolute inset-0 z-10 pointer-events-none grid grid-cols-4 border-x border-white/5">
+          <div className="border-r border-white/5" />
+          <div className="border-r border-white/5" />
+          <div className="border-r border-white/5" />
+        </div>
+ 
         {/* Floating tech markings / interface details for Spatial aesthetic */}
-        <div className="absolute inset-x-6 top-28 z-20 hidden md:flex justify-between pointer-events-none text-white/40 font-mono text-xs">
-          <div className="flex items-center gap-2">
-            <Orbit className="w-4 h-4 text-[#A88BE8] animate-spin" style={{ animationDuration: '10s' }} />
-            <span>SAT_PREVIEW // MULTISPECTRAL_ORBIT_LOCK_ON</span>
+        <div className="absolute inset-x-8 bottom-32 z-20 hidden md:flex justify-between pointer-events-none text-white/40 font-mono text-[9px] tracking-[0.2em] uppercase">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-1 rounded-full bg-white animate-pulse" />
+            <span>ORBIT_STATUS // LIVE</span>
           </div>
-          <div className="flex items-center gap-4">
-            <span ref={zoomLevelSpanRef}>ZOOM LEVEL: 100.0%</span>
+          <div className="flex items-center gap-6">
+            <span ref={zoomLevelSpanRef}>ZOOM: 100.0%</span>
             <span ref={timecodeSpanRef}>TIMECODE: 0.00s / {duration.toFixed(1)}s</span>
           </div>
         </div>
-
+ 
         {/* Main Content Layout */}
         <div className="absolute inset-0 z-20 flex flex-col justify-center px-6 max-w-7xl mx-auto">
           
@@ -407,118 +411,93 @@ export default function Hero() {
             style={{ 
               opacity: 1, 
               transform: 'translateY(0px)',
-              transition: 'opacity 0.15s ease-out, transform 0.15s ease-out'
+              transition: 'opacity 0.2s ease-out, transform 0.2s ease-out'
             }}
             className="max-w-4xl"
           >
             {/* Elegant Brand Tagline */}
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-6 backdrop-blur-md">
-              <Sparkles className="w-4 h-4 text-[#F9B27A]" />
-              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#D6D8E2]">
-                CENTRAL MAPS • Inteligência Geoespacial
+            <div className="inline-block mb-6">
+              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/70">
+                CENTRAL MAPS // SPATIAL INTELLIGENCE
               </span>
             </div>
-
+ 
             {/* Headline */}
-            <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-7xl leading-[95%] tracking-tight text-white mb-6">
-              Inteligência Geoespacial para Transformar Dados em Decisões
+            <h1 className="font-display font-medium text-4xl sm:text-6xl md:text-8xl tracking-tight text-white mb-6 leading-[1.0] max-w-5xl">
+              Dados espaciais em <br />
+              <span className="italic font-normal text-white/95">decisões de impacto</span>.
             </h1>
-
+ 
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-[#D6D8E2]/90 font-light leading-relaxed max-w-2xl mb-8">
-              Geoprocessamento, Sensoriamento Remoto, Desenvolvimento de Sistemas e Soluções Digitais sob medida para empresas, instituições e projetos de qualquer porte.
+            <p className="text-sm sm:text-base text-white/80 font-light leading-relaxed max-w-xl mb-10 tracking-wide">
+              Geoprocessamento de alta precisão, sensoriamento remoto avançado e engenharia de sistemas sob medida para impulsionar projetos de qualquer escala.
             </p>
-
-            {/* Tags / Statements */}
-            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-10 text-sm font-semibold tracking-wider text-[#A88BE8] uppercase font-mono">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F9B27A]" />
-                Mapeamos territórios.
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E6B0D5]" />
-                Analisamos dados.
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#A88BE8]" />
-                Desenvolvemos tecnologia.
-              </span>
-            </div>
-
-            {/* CTA and Mouse Scroller */}
+ 
+            {/* CTA */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <a 
                 href="#contato"
-                className="btn-primary flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-[#0A0D18]"
+                className="inline-block bg-white text-black font-medium text-xs uppercase tracking-[0.2em] px-8 py-4 rounded hover:bg-neutral-200 transition-colors duration-200"
                 id="hero-cta"
               >
                 Solicitar Orçamento
               </a>
-              
-              <div className="flex items-center gap-3 text-[#D6D8E2]/60 text-xs font-mono tracking-widest uppercase">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F9B27A] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F9B27A]"></span>
-                </span>
-                ROLE PARA ROLAR O VÍDEO E EXPLORAR
-              </div>
             </div>
           </div>
-
+ 
           {/* Narrative Stage 2: Secondary Supporting Copy (Revealed mid-scroll) */}
           <div 
             ref={stage2Ref}
             style={{ 
               opacity: 0,
               pointerEvents: 'none',
-              transition: 'opacity 0.15s ease-out'
+              transition: 'opacity 0.2s ease-out'
             }}
-            className="absolute inset-x-6 md:max-w-4xl max-w-xl mx-auto text-center"
+            className="absolute inset-x-6 max-w-3xl mx-auto text-center"
           >
-            <div className="inline-flex items-center gap-2 bg-[#6F5BD3]/10 border border-[#A88BE8]/30 px-4 py-2 rounded-full mb-6">
-              <Award className="w-4 h-4 text-[#A88BE8]" />
-              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#A88BE8]">
-                Visual Premium & Precisão Técnica
+            <div className="inline-block mb-4">
+              <span className="font-mono text-[10px] tracking-[0.25em] text-white/60 uppercase">
+                TECNOLOGIA MULTIESPECTRAL
               </span>
             </div>
             
-            <h2 className="font-display font-bold text-3xl sm:text-5xl leading-tight text-white mb-6">
-              Transformando Dados em Soluções Inteligentes
+            <h2 className="font-display italic font-normal text-3xl sm:text-5xl tracking-tight text-white mb-6 leading-tight">
+              Visão orbital para planejar o amanhã
             </h2>
             
-            <p className="text-base sm:text-lg text-[#D6D8E2] max-w-2xl mx-auto leading-relaxed mb-8">
-              Geoprocessamento, Sensoriamento Remoto e Desenvolvimento Digital para empresas que precisam tomar decisões com precisão.
+            <p className="text-xs sm:text-sm text-white/70 max-w-lg mx-auto leading-relaxed mb-8 tracking-wide font-light">
+              Extraímos padrões invisíveis através do processamento avançado de imagens de satélite Landsat e Sentinel para tomada de decisões estratégicas.
             </p>
-
+ 
             <a
               href="#introducao"
               onClick={handleScrollToNext}
-              className="btn-secondary inline-flex items-center gap-2 text-sm"
+              className="inline-flex items-center gap-2 border border-white text-white font-medium text-xs uppercase tracking-[0.2em] px-6 py-3.5 rounded hover:bg-white hover:text-black transition-colors duration-200"
               id="hero-scroll-btn"
             >
               Conhecer Serviços
-              <ChevronDown className="w-4 h-4 text-[#F9B27A] animate-bounce" />
+              <ChevronDown className="w-4 h-4" />
             </a>
           </div>
-
+ 
         </div>
-
+ 
         {/* Scroll Indicator Icon (Absolute bottom of viewport) */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none">
-          <span ref={scrollLabelRef} className="text-[10px] font-mono tracking-widest uppercase text-white/40">
+          <span ref={scrollLabelRef} className="text-[9px] font-mono tracking-[0.2em] uppercase text-white/40">
             EXPLORE O TERRITÓRIO
           </span>
-          <div className="w-6 h-10 border border-white/20 rounded-full flex items-start justify-center p-1.5">
+          <div className="w-4 h-7 border border-white/20 rounded-full flex items-start justify-center p-1">
             <motion.div 
               animate={{ 
-                y: [0, 12, 0],
+                y: [0, 8, 0],
               }}
               transition={{ 
                 duration: 1.5, 
                 repeat: Infinity, 
                 ease: "easeInOut" 
               }}
-              className="w-1.5 h-1.5 rounded-full bg-[#F9B27A]" 
+              className="w-1 h-1 rounded-full bg-white" 
             />
           </div>
         </div>
