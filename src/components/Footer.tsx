@@ -13,11 +13,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#F8F8F6] border-t border-[#D9D9D9] pt-20 pb-10 px-6 relative overflow-hidden" id="main-footer">
+    <footer className="bg-[#0A0A0B] border-t border-[#2A2A2C] pt-20 pb-10 px-6 relative overflow-hidden" id="main-footer">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Main Grid: Left branding, Middle link columns, Right contacts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-[#D9D9D9]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-[#2A2A2C]">
           
           {/* Column 1: Branding (lg:col-span-5) */}
           <div className="lg:col-span-5 space-y-6">
@@ -28,20 +28,20 @@ export default function Footer() {
               id="footer-logo-link"
               aria-label="Central Maps - Voltar ao topo"
             >
-              <div className="w-10 h-10 flex items-center justify-center bg-white border border-[#D9D9D9] rounded group-hover:bg-black group-hover:text-white group-hover:border-black transition-colors duration-300">
-                <Compass className="w-5 h-5 text-black group-hover:text-white transition-colors duration-300" />
+              <div className="w-10 h-10 flex items-center justify-center bg-[#141416] border border-[#2A2A2C] rounded group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors duration-300">
+                <Compass className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
               </div>
               <div>
-                <span className="font-display font-medium text-lg tracking-wider text-black">
+                <span className="font-display font-medium text-lg tracking-wider text-white">
                   CENTRAL <span className="italic font-normal">MAPS</span>
                 </span>
-                <span className="block font-mono text-[8px] text-[#555555] tracking-[0.25em] uppercase">
+                <span className="block font-mono text-[8px] text-[#A1A1A5] tracking-[0.25em] uppercase">
                   SPATIAL INTELLIGENCE // SP // BR
                 </span>
               </div>
             </a>
 
-            <p className="text-xs text-[#555555] leading-relaxed font-light max-w-xs">
+            <p className="text-xs text-[#A1A1A5] leading-relaxed font-light max-w-xs">
               Unindo tecnologia geoespacial, análise de dados de satélite e desenvolvimento digital sob medida com os mais altos padrões de design e engenharia técnica.
             </p>
 
@@ -57,7 +57,7 @@ export default function Footer() {
                   <a
                     key={idx}
                     href={soc.href}
-                    className="w-10 h-10 bg-white border border-[#D9D9D9] hover:bg-black hover:text-white hover:border-black rounded flex items-center justify-center text-[#555555] transition-all duration-200"
+                    className="w-10 h-10 bg-[#141416] border border-[#2A2A2C] hover:bg-white hover:text-black hover:border-white rounded flex items-center justify-center text-[#A1A1A5] transition-all duration-200"
                     aria-label={`Visite nosso ${soc.label}`}
                     id={`footer-social-${soc.label.toLowerCase()}`}
                   >
@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Column 2: Quick Links (lg:col-span-3) */}
           <div className="lg:col-span-3 space-y-4">
-            <h4 className="font-mono text-[9px] font-semibold text-black uppercase tracking-[0.25em]">
+            <h4 className="font-mono text-[9px] font-semibold text-white uppercase tracking-[0.25em]">
               NAVEGAÇÃO
             </h4>
             <nav className="flex flex-col gap-3.5" aria-label="Links rápidos do rodapé">
@@ -85,7 +85,7 @@ export default function Footer() {
                   key={link.label}
                   href={link.href}
                   onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className="text-xs text-[#555555] hover:text-black hover:italic transition-all w-fit"
+                  className="text-xs text-[#A1A1A5] hover:text-white hover:italic transition-all w-fit"
                   id={`footer-nav-${link.href.replace('#', '')}`}
                 >
                   {link.label}
@@ -96,34 +96,34 @@ export default function Footer() {
 
           {/* Column 3: Contact details (lg:col-span-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <h4 className="font-mono text-[9px] font-semibold text-black uppercase tracking-[0.25em]">
+            <h4 className="font-mono text-[9px] font-semibold text-white uppercase tracking-[0.25em]">
               CONTATOS & LOCALIZAÇÃO
             </h4>
             
-            <address className="not-italic space-y-3.5 text-xs text-[#555555]">
+            <address className="not-italic space-y-3.5 text-xs text-[#A1A1A5]">
               <div className="flex items-start gap-3">
-                <MapPin className="w-3.5 h-3.5 text-black shrink-0 mt-0.5" />
+                <MapPin className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
                 <span className="font-light">São Paulo, SP — Engenharia Digital & Geoprocessamento</span>
               </div>
               
               <div className="flex items-center gap-3">
-                <Mail className="w-3.5 h-3.5 text-black" />
-                <a href="mailto:contato@centralmaps.com.br" className="hover:text-black hover:underline transition-colors font-light">
+                <Mail className="w-3.5 h-3.5 text-white" />
+                <a href="mailto:contato@centralmaps.com.br" className="hover:text-white hover:underline transition-colors font-light">
                   contato@centralmaps.com.br
                 </a>
               </div>
 
               <div className="flex items-center gap-3">
-                <Phone className="w-3.5 h-3.5 text-black" />
-                <a href="tel:+5511999999999" className="hover:text-black hover:underline transition-colors font-light">
+                <Phone className="w-3.5 h-3.5 text-white" />
+                <a href="tel:+5511999999999" className="hover:text-white hover:underline transition-colors font-light">
                   +55 (11) 99999-9999
                 </a>
               </div>
             </address>
 
             <div className="pt-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#D9D9D9] rounded font-mono text-[8px] text-[#555555] uppercase tracking-wider">
-                <Globe className="w-3.5 h-3.5 text-black" />
+              <span className="inline-flex items-center gap-2 px-3 py-1 bg-[#141416] border border-[#2A2A2C] rounded font-mono text-[8px] text-[#A1A1A5] uppercase tracking-wider">
+                <Globe className="w-3.5 h-3.5 text-white" />
                 CRS // EPSG_4326 // SYSTEM
               </span>
             </div>
@@ -132,7 +132,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright legal & technology references */}
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] font-mono text-[#555555]">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] font-mono text-[#A1A1A5]">
           <div>
             &copy; {currentYear} CENTRAL MAPS. TODOS OS DIREITOS RESERVADOS.
           </div>

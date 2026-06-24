@@ -43,13 +43,13 @@ export default function Header() {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-[#F8F8F6]/90 backdrop-blur-md border-b border-[#D9D9D9] py-3' : 'bg-transparent py-5'
+        isScrolled ? 'bg-[#0A0A0B]/95 backdrop-blur-md border-b border-[#2A2A2C] py-3' : 'bg-transparent py-5'
       }`}
       id="main-header"
     >
       {/* Scroll Progress Bar */}
       <div 
-        className="absolute top-0 left-0 h-[2px] bg-black transition-all duration-75"
+        className="absolute top-0 left-0 h-[2px] bg-white transition-all duration-75"
         style={{ width: `${scrollProgress}%` }}
         role="progressbar"
         aria-valuenow={scrollProgress}
@@ -63,18 +63,18 @@ export default function Header() {
         <a 
           href="#" 
           onClick={(e) => handleSmoothScroll(e, '#')} 
-          className="flex items-center gap-3 group focus:outline-none focus:ring-1 focus:ring-black rounded p-1"
+          className="flex items-center gap-3 group focus:outline-none focus:ring-1 focus:ring-white rounded p-1"
           aria-label="Central Maps - Voltar ao topo"
           id="logo-link"
         >
-          <div className="relative w-8 h-8 flex items-center justify-center bg-black text-white rounded">
+          <div className="relative w-8 h-8 flex items-center justify-center bg-white text-black rounded">
             <Compass className="w-4 h-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
           </div>
           <div>
-            <div className="font-display font-bold text-sm tracking-[0.15em] text-black">
+            <div className="font-display font-bold text-sm tracking-[0.15em] text-white">
               CENTRAL MAPS
             </div>
-            <div className="font-mono text-[8px] text-[#555555] tracking-widest uppercase">
+            <div className="font-mono text-[8px] text-[#A1A1A5] tracking-widest uppercase">
               GEOSPATIAL INTELLIGENCE // SP_BR
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function Header() {
               key={item.label}
               href={item.href}
               onClick={(e) => handleSmoothScroll(e, item.href)}
-              className="text-[11px] font-medium text-black/60 hover:text-black uppercase tracking-[0.2em] transition-colors duration-200 relative py-1 focus:outline-none focus:text-black after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-black hover:after:w-full after:transition-all after:duration-300"
+              className="text-[11px] font-medium text-white/60 hover:text-white uppercase tracking-[0.2em] transition-colors duration-200 relative py-1 focus:outline-none focus:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300"
               id={`nav-${item.href.replace('#', '')}`}
             >
               {item.label}
@@ -100,7 +100,7 @@ export default function Header() {
           <a
             href="#contato"
             onClick={(e) => handleSmoothScroll(e, '#contato')}
-            className="inline-flex items-center gap-2 border border-black bg-black text-white font-medium text-xs uppercase tracking-[0.15em] px-5 py-2.5 rounded hover:bg-neutral-800 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-black"
+            className="inline-flex items-center gap-2 border border-white bg-white text-black font-medium text-xs uppercase tracking-[0.15em] px-5 py-2.5 rounded hover:bg-neutral-200 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-white"
             id="nav-cta"
           >
             Orçamento
@@ -110,7 +110,7 @@ export default function Header() {
         {/* Mobile Menu Trigger Button (Target area > 44px) */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden flex items-center justify-center w-11 h-11 rounded border border-black/10 bg-white text-black focus:outline-none focus:ring-1 focus:ring-black"
+          className="md:hidden flex items-center justify-center w-11 h-11 rounded border border-white/10 bg-[#141416] text-white focus:outline-none focus:ring-1 focus:ring-white"
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-menu"
           aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
@@ -129,7 +129,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 bg-[#F8F8F6] border-b border-[#D9D9D9] py-6 px-6 md:hidden flex flex-col gap-5 shadow-sm"
+            className="absolute top-full left-0 right-0 bg-[#0A0A0B] border-b border-[#2A2A2C] py-6 px-6 md:hidden flex flex-col gap-5 shadow-sm"
           >
             <div className="flex flex-col gap-3">
               {menuItems.map((item) => (
@@ -137,7 +137,7 @@ export default function Header() {
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleSmoothScroll(e, item.href)}
-                  className="text-xs font-medium text-black/70 hover:text-black py-2 border-b border-black/5 uppercase tracking-[0.15em] focus:outline-none"
+                  className="text-xs font-medium text-white/75 hover:text-white py-2 border-b border-white/5 uppercase tracking-[0.15em] focus:outline-none"
                   id={`mobile-nav-${item.href.replace('#', '')}`}
                 >
                   {item.label}
@@ -147,7 +147,7 @@ export default function Header() {
             <a
               href="#contato"
               onClick={(e) => handleSmoothScroll(e, '#contato')}
-              className="w-full text-center bg-black text-white font-medium text-xs uppercase tracking-[0.15em] py-3 px-6 rounded transition-all duration-300 hover:bg-neutral-800"
+              className="w-full text-center bg-white text-black font-medium text-xs uppercase tracking-[0.15em] py-3 px-6 rounded transition-all duration-300 hover:bg-neutral-200"
               id="mobile-nav-cta"
             >
               Solicitar Orçamento

@@ -323,7 +323,7 @@ export default function Hero() {
   return (
     <div 
       ref={containerRef} 
-      className="relative w-full h-[350vh] bg-[#F8F8F6]" 
+      className="relative w-full h-[350vh] bg-[#0A0A0B]" 
       id="hero-track"
     >
       {/* Sticky viewport container (100vh) */}

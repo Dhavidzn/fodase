@@ -98,46 +98,46 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="relative py-28 px-6 bg-[#F8F8F6] border-t border-[#D9D9D9]" id="contato">
+    <section className="relative py-28 px-6 bg-[#0A0A0B] border-t border-[#2A2A2C]" id="contato">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left Column: Direct Verbatim Copy Block */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
-              <div className="text-[#555555] font-mono text-[10px] uppercase tracking-[0.25em]">
+              <div className="text-[#A1A1A5] font-mono text-[10px] uppercase tracking-[0.25em]">
                 SOLICITAÇÃO DE ORÇAMENTO
               </div>
               
-              <h2 className="font-display font-medium text-3xl sm:text-5xl text-black tracking-tight leading-[110%]">
+              <h2 className="font-display font-medium text-3xl sm:text-5xl text-white tracking-tight leading-[110%]">
                 Vamos Construir <br />
                 <span className="italic font-normal">Seu Próximo Projeto?</span>
               </h2>
             </div>
 
-            <div className="space-y-6 text-[#555555] text-sm leading-relaxed font-light">
+            <div className="space-y-6 text-[#A1A1A5] text-sm leading-relaxed font-light">
               <p>
                 Seja para análise geográfica, monitoramento por satélite, desenvolvimento de sistemas ou criação da sua presença digital, a Central Maps está pronta para transformar sua ideia em realidade.
               </p>
-              <p className="border-l border-black pl-5 italic text-black/90">
+              <p className="border-l border-white pl-5 italic text-white/90">
                 Entre em contato e descubra como podemos ajudar você a tomar decisões mais inteligentes.
               </p>
             </div>
 
             {/* Premium Editorial Call to Action Box */}
-            <div className="bg-white border border-[#D9D9D9] rounded p-6 relative overflow-hidden group">
+            <div className="bg-[#141416] border border-[#2A2A2C] rounded p-6 relative overflow-hidden group">
               <div className="relative z-10 space-y-4">
-                <div className="flex items-center gap-2 text-black font-mono text-[9px] uppercase tracking-[0.2em] font-semibold">
+                <div className="flex items-center gap-2 text-white font-mono text-[9px] uppercase tracking-[0.2em] font-semibold">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>INTEGRAÇÃO SPATIAL // INSIGHTS</span>
                 </div>
-                <h3 className="font-display font-medium text-lg text-black tracking-tight">
+                <h3 className="font-display font-medium text-lg text-white tracking-tight">
                   Vamos transformar seus dados em resultados?
                 </h3>
-                <p className="text-xs text-[#555555] font-light">
+                <p className="text-xs text-[#A1A1A5] font-light">
                   Preencha o formulário ao lado e inicie o mapeamento de soluções com engenharia de ponta.
                 </p>
-                <div className="flex items-center gap-2 text-black font-mono text-[10px] font-bold pt-2 uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-white font-mono text-[10px] font-bold pt-2 uppercase tracking-wider">
                   <span>FALAR COM UM ESPECIALISTA</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
                 </div>
@@ -145,21 +145,21 @@ export default function ContactForm() {
             </div>
 
             {/* Security badges */}
-            <div className="flex items-center gap-4 text-[10px] font-mono text-[#555555]">
+            <div className="flex items-center gap-4 text-[10px] font-mono text-[#A1A1A5]">
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-black" />
+                <ShieldCheck className="w-3.5 h-3.5 text-white" />
                 <span>LGPD COMPLIANT</span>
               </div>
               <span>•</span>
               <div className="flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-black" />
+                <Mail className="w-3.5 h-3.5 text-white" />
                 <span>RESPOSTA EM ATÉ 24H</span>
               </div>
             </div>
           </div>
 
           {/* Right Column: Premium Form Panel */}
-          <div className="lg:col-span-7 bg-white rounded p-8 md:p-10 border border-[#D9D9D9] relative overflow-hidden">
+          <div className="lg:col-span-7 bg-[#141416] rounded p-8 md:p-10 border border-[#2A2A2C] relative overflow-hidden">
             <AnimatePresence mode="wait">
               
               {!proposalResult ? (
@@ -170,11 +170,11 @@ export default function ContactForm() {
                   className="space-y-6"
                   noValidate
                 >
-                  <div className="border-b border-[#D9D9D9] pb-4 mb-6">
-                    <h3 className="font-display font-medium text-lg text-black tracking-tight">
+                  <div className="border-b border-[#2A2A2C] pb-4 mb-6">
+                    <h3 className="font-display font-medium text-lg text-white tracking-tight">
                       Mapeamento de Requisitos
                     </h3>
-                    <p className="text-[9px] text-[#555555] font-mono mt-1 uppercase tracking-widest">
+                    <p className="text-[9px] text-[#A1A1A5] font-mono mt-1 uppercase tracking-widest">
                       INFORME OS DADOS DO SEU TERRITÓRIO OU PROJETO
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export default function ContactForm() {
                     <motion.div 
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-black text-white p-4 rounded text-xs flex items-start gap-2.5"
+                      className="bg-red-900/40 border border-red-500 text-white p-4 rounded text-xs flex items-start gap-2.5"
                     >
                       <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-white" />
                       <span>{error}</span>
@@ -194,7 +194,7 @@ export default function ContactForm() {
                   {/* Grid for Nome & Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label htmlFor="form-nome" className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                      <label htmlFor="form-nome" className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                         Nome Completo *
                       </label>
                       <input 
@@ -204,13 +204,13 @@ export default function ContactForm() {
                         value={formState.nome}
                         onChange={handleInputChange}
                         placeholder="Ex: David Costa"
-                        className="w-full h-11 bg-[#F8F8F6] rounded px-4 text-black placeholder-[#555555]/40 focus:border-black focus:ring-0 outline-none text-xs transition-all border border-[#D9D9D9]"
+                        className="w-full h-11 bg-[#0A0A0B] rounded px-4 text-white placeholder-[#A1A1A5]/40 focus:border-white focus:ring-0 outline-none text-xs transition-all border border-[#2A2A2C]"
                         required
                       />
                     </div>
                     
                     <div className="space-y-2">
-                      <label htmlFor="form-email" className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                      <label htmlFor="form-email" className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                         E-mail de Trabalho *
                       </label>
                       <input 
@@ -220,7 +220,7 @@ export default function ContactForm() {
                         value={formState.email}
                         onChange={handleInputChange}
                         placeholder="Ex: seuemail@empresa.com"
-                        className="w-full h-11 bg-[#F8F8F6] rounded px-4 text-black placeholder-[#555555]/40 focus:border-black focus:ring-0 outline-none text-xs transition-all border border-[#D9D9D9]"
+                        className="w-full h-11 bg-[#0A0A0B] rounded px-4 text-white placeholder-[#A1A1A5]/40 focus:border-white focus:ring-0 outline-none text-xs transition-all border border-[#2A2A2C]"
                         required
                       />
                     </div>
@@ -229,7 +229,7 @@ export default function ContactForm() {
                   {/* Grid for Empresa & Setor */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label htmlFor="form-empresa" className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                      <label htmlFor="form-empresa" className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                         Empresa / Instituição
                       </label>
                       <input 
@@ -239,12 +239,12 @@ export default function ContactForm() {
                         value={formState.empresa}
                         onChange={handleInputChange}
                         placeholder="Ex: Agro S/A ou USP"
-                        className="w-full h-11 bg-[#F8F8F6] rounded px-4 text-black placeholder-[#555555]/40 focus:border-black focus:ring-0 outline-none text-xs transition-all border border-[#D9D9D9]"
+                        className="w-full h-11 bg-[#0A0A0B] rounded px-4 text-white placeholder-[#A1A1A5]/40 focus:border-white focus:ring-0 outline-none text-xs transition-all border border-[#2A2A2C]"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="form-setor" className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                      <label htmlFor="form-setor" className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                         Setor de Atuação
                       </label>
                       <select 
@@ -252,7 +252,7 @@ export default function ContactForm() {
                         name="setor"
                         value={formState.setor}
                         onChange={handleInputChange}
-                        className="w-full h-11 bg-[#F8F8F6] rounded px-4 text-black placeholder-[#555555]/40 focus:border-black focus:ring-0 outline-none text-xs transition-all border border-[#D9D9D9] cursor-pointer"
+                        className="w-full h-11 bg-[#0A0A0B] rounded px-4 text-white placeholder-[#A1A1A5]/40 focus:border-white focus:ring-0 outline-none text-xs transition-all border border-[#2A2A2C] cursor-pointer"
                       >
                         <option value="meio-ambiente">Meio Ambiente</option>
                         <option value="agronegocio">Agronegócio</option>
@@ -270,7 +270,7 @@ export default function ContactForm() {
 
                   {/* Services Checkbox area */}
                   <div className="space-y-3">
-                    <span className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                    <span className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                       Serviços Desejados
                     </span>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -288,13 +288,13 @@ export default function ContactForm() {
                           onClick={() => handleCheckboxChange(svc.key)}
                           className={`flex items-center gap-2.5 p-3 rounded text-left border transition-all text-xs focus:outline-none ${
                             servicesSelected[svc.key]
-                              ? 'bg-black border-black text-white font-medium'
-                              : 'bg-white border-[#D9D9D9] text-[#555555] hover:border-black hover:text-black'
+                              ? 'bg-white border-white text-black font-medium'
+                              : 'bg-[#0A0A0B] border-[#2A2A2C] text-[#A1A1A5] hover:border-white hover:text-white'
                           }`}
                           id={`chk-${svc.key}`}
                         >
                           <CheckSquare className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                            servicesSelected[svc.key] ? 'text-white' : 'text-neutral-300'
+                            servicesSelected[svc.key] ? 'text-black' : 'text-neutral-600'
                           }`} />
                           <span className="truncate">{svc.label}</span>
                         </button>
@@ -304,7 +304,7 @@ export default function ContactForm() {
 
                   {/* Textarea Description */}
                   <div className="space-y-2">
-                    <label htmlFor="form-mensagem" className="block text-[9px] font-mono font-semibold text-black uppercase tracking-wider">
+                    <label htmlFor="form-mensagem" className="block text-[9px] font-mono font-semibold text-white uppercase tracking-wider">
                       Descrição do Projeto / Mensagem *
                     </label>
                     <textarea 
@@ -313,7 +313,7 @@ export default function ContactForm() {
                       value={formState.mensagem}
                       onChange={handleInputChange}
                       placeholder="Fale brevemente sobre sua ideia, área geográfica de interesse..."
-                      className="w-full h-32 bg-[#F8F8F6] rounded p-4 text-black placeholder-[#555555]/40 focus:border-black focus:ring-0 outline-none text-xs transition-all border border-[#D9D9D9] resize-none"
+                      className="w-full h-32 bg-[#0A0A0B] rounded p-4 text-white placeholder-[#A1A1A5]/40 focus:border-white focus:ring-0 outline-none text-xs transition-all border border-[#2A2A2C] resize-none"
                       required
                     />
                   </div>
@@ -323,17 +323,17 @@ export default function ContactForm() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-12 bg-black text-white hover:bg-neutral-800 flex items-center justify-center gap-3 font-medium text-xs uppercase tracking-[0.2em] disabled:opacity-50 cursor-pointer rounded transition-colors duration-200"
+                      className="w-full h-12 bg-white text-black hover:bg-neutral-200 flex items-center justify-center gap-3 font-medium text-xs uppercase tracking-[0.2em] disabled:opacity-50 cursor-pointer rounded transition-colors duration-200"
                       id="submit-form-btn"
                     >
                       {isSubmitting ? (
                         <>
-                          <Compass className="w-4 h-4 animate-spin text-white" />
+                          <Compass className="w-4 h-4 animate-spin text-black" />
                           Processando Vetores...
                         </>
                       ) : (
                         <>
-                          <Send className="w-3.5 h-3.5 text-white" />
+                          <Send className="w-3.5 h-3.5 text-black" />
                           Falar com um Especialista
                         </>
                       )}
@@ -349,41 +349,41 @@ export default function ContactForm() {
                   exit={{ opacity: 0, scale: 0.98 }}
                   className="space-y-6 text-center py-6"
                 >
-                  <div className="w-16 h-16 bg-[#F8F8F6] border border-black rounded-full flex items-center justify-center mx-auto mb-4">
-                    <ShieldCheck className="w-8 h-8 text-black" />
+                  <div className="w-16 h-16 bg-[#0A0A0B] border border-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ShieldCheck className="w-8 h-8 text-white" />
                   </div>
 
-                  <span className="font-mono text-[9px] text-[#555555] tracking-[0.25em] uppercase block">
+                  <span className="font-mono text-[9px] text-[#A1A1A5] tracking-[0.25em] uppercase block">
                     MAP_PROPOSAL_GENERATED // OK
                   </span>
 
-                  <h3 className="font-display font-medium text-2xl sm:text-3xl text-black tracking-tight">
+                  <h3 className="font-display font-medium text-2xl sm:text-3xl text-white tracking-tight">
                     Olá, <span className="italic font-normal">{proposalResult.clientName}</span>!
                   </h3>
                   
-                  <p className="text-[#555555] text-xs leading-relaxed max-w-lg mx-auto font-light">
+                  <p className="text-[#A1A1A5] text-xs leading-relaxed max-w-lg mx-auto font-light">
                     Obrigado pelo contato. Nosso sistema de inteligência analisou seus requisitos e gerou uma estimativa de processamento:
                   </p>
 
                   {/* Telemetry breakdown */}
-                  <div className="bg-[#F8F8F6] border border-[#D9D9D9] rounded p-6 text-left space-y-4 max-w-md mx-auto">
-                    <div className="flex items-center justify-between border-b border-[#D9D9D9] pb-3">
-                      <span className="font-mono text-[9px] text-[#555555] uppercase">SERVIÇOS REQUERIDOS</span>
-                      <span className="font-mono text-xs text-black font-semibold">{proposalResult.servicesCount} Módulos</span>
+                  <div className="bg-[#0A0A0B] border border-[#2A2A2C] rounded p-6 text-left space-y-4 max-w-md mx-auto">
+                    <div className="flex items-center justify-between border-b border-[#2A2A2C] pb-3">
+                      <span className="font-mono text-[9px] text-[#A1A1A5] uppercase">SERVIÇOS REQUERIDOS</span>
+                      <span className="font-mono text-xs text-white font-semibold">{proposalResult.servicesCount} Módulos</span>
                     </div>
 
-                    <div className="flex items-center justify-between border-b border-[#D9D9D9] pb-3">
-                      <span className="font-mono text-[9px] text-[#555555] uppercase">PRAZO ESTIMADO DE ANÁLISE</span>
-                      <span className="font-mono text-xs text-black font-semibold">{proposalResult.estimatedDays} dias úteis</span>
+                    <div className="flex items-center justify-between border-b border-[#2A2A2C] pb-3">
+                      <span className="font-mono text-[9px] text-[#A1A1A5] uppercase">PRAZO ESTIMADO DE ANÁLISE</span>
+                      <span className="font-mono text-xs text-white font-semibold">{proposalResult.estimatedDays} dias úteis</span>
                     </div>
 
                     <div className="space-y-2">
-                      <span className="block font-mono text-[9px] text-[#555555] uppercase">TECNOLOGIAS DE PROCESSAMENTO INDICADAS</span>
+                      <span className="block font-mono text-[9px] text-[#A1A1A5] uppercase">TECNOLOGIAS DE PROCESSAMENTO INDICADAS</span>
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {proposalResult.tools.map((tool: string, idx: number) => (
                           <span 
                             key={idx} 
-                            className="bg-white border border-[#D9D9D9] px-2 py-1 rounded text-[9px] font-mono text-black"
+                            className="bg-[#141416] border border-[#2A2A2C] px-2 py-1 rounded text-[9px] font-mono text-white"
                           >
                             {tool}
                           </span>
@@ -392,14 +392,14 @@ export default function ContactForm() {
                     </div>
                   </div>
 
-                  <p className="text-[10px] text-[#555555] max-w-md mx-auto italic font-light pt-4 leading-relaxed">
+                  <p className="text-[10px] text-[#A1A1A5] max-w-md mx-auto italic font-light pt-4 leading-relaxed">
                     Uma cópia deste escopo tecnológico inicial foi encaminhada para {formState.email}. Um especialista da Central Maps entrará em contato em breve para agendar uma demonstração detalhada.
                   </p>
 
                   <button
                     type="button"
                     onClick={() => setProposalResult(null)}
-                    className="border border-black hover:bg-black hover:text-white text-black px-6 py-2.5 text-[10px] font-mono uppercase tracking-[0.15em] transition-colors duration-200 cursor-pointer rounded"
+                    className="border border-white hover:bg-white hover:text-black text-white px-6 py-2.5 text-[10px] font-mono uppercase tracking-[0.15em] transition-colors duration-200 cursor-pointer rounded"
                     id="btn-proposal-reset"
                   >
                     Novo Diagnóstico de Projeto

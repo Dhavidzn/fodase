@@ -15,7 +15,7 @@ import Footer from './components/Footer';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-[#F8F8F6] text-black selection:bg-black selection:text-white">
+    <div className="relative min-h-screen bg-[#0A0A0B] text-white selection:bg-white selection:text-black">
       {/* Universal navigation and progress bar */}
       <Header />
 
