@@ -12,8 +12,7 @@ export default function Hero() {
   const scrollLabelRef = useRef<HTMLSpanElement>(null);
 
   const duration = 8.0; // 8 seconds total video duration
-  const totalFrames = 100; // 100 frames is highly optimized for fast preloading and perfectly smooth scrub
-  const [loadedCount, setLoadedCount] = useState<number>(0);
+  const totalFrames = 36; // Highly optimized 36 frames for lightning-fast loading and fully fluid scroll mapping
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const [loadError, setLoadError] = useState<boolean>(false);
 
@@ -125,9 +124,9 @@ export default function Hero() {
     video.preload = "auto";
 
     const offscreenCanvas = document.createElement('canvas');
-    // 960x540 é o equilíbrio perfeito para velocidade de decodificação extrema, baixo consumo de memória RAM e altíssima nitidez
-    offscreenCanvas.width = 960;
-    offscreenCanvas.height = 540;
+    // 800x450 é ideal para carregamento instantâneo e excelente definição no plano de fundo
+    offscreenCanvas.width = 800;
+    offscreenCanvas.height = 450;
     const offscreenCtx = offscreenCanvas.getContext('2d');
 
     let currentFrame = 0;
@@ -165,7 +164,6 @@ export default function Hero() {
             }
             
             currentFrame++;
-            setLoadedCount(currentFrame);
             seekNextFrame();
           }
         }
@@ -356,24 +354,7 @@ export default function Hero() {
           />
         )}
 
-        {/* Subtle, non-blocking background progress bar and status indicator */}
-        {loadedCount < totalFrames && !loadError && (
-          <div className="absolute top-24 right-6 z-30 flex flex-col items-end gap-1.5 pointer-events-none">
-            <div className="flex items-center gap-2 bg-black border border-white/20 px-3 py-1.5 rounded shadow-sm">
-              <Orbit className="w-3.5 h-3.5 text-white animate-spin" />
-              <span className="font-mono text-[9px] text-white uppercase tracking-[0.15em]">
-                PRELOADING: {Math.round((loadedCount / totalFrames) * 100)}%
-              </span>
-            </div>
-            {/* Tiny progress bar */}
-            <div className="w-24 h-[1px] bg-white/20 overflow-hidden">
-              <div 
-                className="h-full bg-white transition-all duration-300"
-                style={{ width: `${Math.round((loadedCount / totalFrames) * 100)}%` }}
-              />
-            </div>
-          </div>
-        )}
+
 
         {/* Ambient Overlay: Dark elegant luxury overlay */}
         <div 
